@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkmjjcbm8ntdt"]
+
+[ext_resource type="PackedScene" uid="uid://biudgdjvmdvmb" path="res://Nodes/Components/follow_target.tscn" id="1_g32ad"]
+[ext_resource type="Script" uid="uid://c3koxq40wr0s1" path="res://Scripts/Entities/Clone.cs" id="1_vucrp"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_80g0o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iynte"]
+
+[node name="Clone" type="CharacterBody3D"]
+script = ExtResource("1_vucrp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_80g0o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_iynte")
+
+[node name="FollowTarget" parent="." instance=ExtResource("1_g32ad")]
+target_desired_distance = 2.0
+avoidance_enabled = false
+Speed = 7.0

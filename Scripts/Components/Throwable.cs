@@ -17,7 +17,6 @@ public partial class Throwable : RigidBody3D
 		if (LinearVelocity.Length() < 1 && !_isHolded)
 		{
 			_wakeUpTimer.Paused = false;
-			GD.Print(_wakeUpTimer.TimeLeft);
 		}
 		else
 		{
@@ -40,9 +39,8 @@ public partial class Throwable : RigidBody3D
 
 	private void OnWakeUpTimerTimeout()
 	{
-		GD.Print("Replace throwable by original");
-		original.GlobalPosition = GlobalPosition;
 		GetTree().Root.AddChild(original);
+		original.GlobalPosition = GlobalPosition;
 		QueueFree();
 	}
 }

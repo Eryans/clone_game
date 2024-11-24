@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://8gafm6cw5ugl"]
+
+[ext_resource type="PackedScene" uid="uid://d0yhypts74cdu" path="res://Nodes/Components/player_controller.tscn" id="1_i6062"]
+[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Grabber.cs" id="2_djihj"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_80g0o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iynte"]
+
+[node name="Player" type="CharacterBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_80g0o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_iynte")
+
+[node name="PlayerController" parent="." instance=ExtResource("1_i6062")]
+
+[node name="Grabber" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 3)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 4
+script = ExtResource("2_djihj")
+
+[node name="Marker3D" type="Marker3D" parent="Grabber"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.01142, 0)

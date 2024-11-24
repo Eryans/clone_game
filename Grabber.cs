@@ -7,7 +7,6 @@ public partial class Grabber : RayCast3D
 	private Marker3D grabbedObjectPoint;
 
 	private Throwable currentHoldedObject;
-	private bool holding = false;
 	public override void _Ready()
 	{
 		parent = GetParent<Node3D>();
@@ -18,9 +17,8 @@ public partial class Grabber : RayCast3D
 	{
 		if (IsInstanceValid(currentHoldedObject))
 		{
-			if (holding)
-				currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
-			if (Input.IsActionJustPressed("action"))
+			currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
+			if (Input.IsActionJustPressed("mouse_left"))
 			{
 				ThrowCurrentHoldedObject();
 			}
@@ -35,7 +33,7 @@ public partial class Grabber : RayCast3D
 			var collision = GetCollider();
 			if (collision is CharacterBody3D cb)
 			{
-				if (Input.IsActionJustPressed("action"))
+				if (Input.IsActionJustPressed("action") && !IsInstanceValid(currentHoldedObject))
 				{
 					SetCurrentHoldedObject((Node3D)cb.Duplicate());
 					cb.QueueFree();
@@ -48,7 +46,6 @@ public partial class Grabber : RayCast3D
 	{
 		if (IsInstanceValid(currentHoldedObject))
 		{
-			holding = false;
 			currentHoldedObject.ApplyCentralImpulse(parent.GlobalTransform.Basis * new Vector3(0, 1, 15));
 			currentHoldedObject.Yeet();
 			currentHoldedObject = null;
@@ -59,8 +56,7 @@ public partial class Grabber : RayCast3D
 	{
 		currentHoldedObject = new Throwable();
 		currentHoldedObject.Setup(entity);
-		currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
-		holding = true;
 		GetTree().Root.AddChild(currentHoldedObject);
+		currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
 	}
 }
