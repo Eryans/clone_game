@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://b24yba6lcep07"]
+
+[ext_resource type="PackedScene" uid="uid://d0yhypts74cdu" path="res://Nodes/Components/player_controller.tscn" id="1_4wuf8"]
+[ext_resource type="PackedScene" uid="uid://biudgdjvmdvmb" path="res://Nodes/Components/follow_target.tscn" id="2_4wuf8"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_t8dge"]
+vertices = PackedVector3Array(-24, -0.000221014, -7, -9, -0.000221014, -7, -8, -0.000221014, -9, 2, -0.000221014, -9, 3, -0.000221014, -24, -24, -0.000221014, -24, 9, -0.000221014, -6, 0, -0.000221014, -5, 0, -0.000221014, 7, 7, -0.000221014, 7, 24, -0.000221014, 6, 8, -0.000221014, -9, 24, -0.000221014, -24, -3, -0.000221014, 24, -2, -0.000221014, 11, -8, -0.000221014, 11, -24, -0.000221014, 24, -8, -0.000221014, -5, -9, -0.000221014, 8, 9, -0.000221014, 8, 8, -0.000221014, 11, 24, -0.000221014, 24)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 2), PackedInt32Array(0, 5, 2), PackedInt32Array(2, 5, 4), PackedInt32Array(8, 7, 9), PackedInt32Array(9, 7, 6), PackedInt32Array(9, 6, 10), PackedInt32Array(6, 11, 10), PackedInt32Array(10, 11, 12), PackedInt32Array(3, 4, 11), PackedInt32Array(11, 4, 12), PackedInt32Array(14, 13, 15), PackedInt32Array(15, 13, 16), PackedInt32Array(7, 8, 17), PackedInt32Array(17, 8, 18), PackedInt32Array(15, 16, 18), PackedInt32Array(18, 16, 0), PackedInt32Array(17, 18, 1), PackedInt32Array(1, 18, 0), PackedInt32Array(19, 9, 10), PackedInt32Array(20, 19, 10), PackedInt32Array(13, 14, 20), PackedInt32Array(10, 21, 20), PackedInt32Array(20, 21, 13)]
+cell_size = 1.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_80g0o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iynte"]
+
+[sub_resource type="Environment" id="Environment_4wuf8"]
+ssao_enabled = true
+
+[node name="TestMap" type="Node3D"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_t8dge")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.438721, 0)
+use_collision = true
+size = Vector3(50, 0.123, 50)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0757, 8.9306)
+use_collision = true
+size = Vector3(15, 3, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0757, -7.0694)
+use_collision = true
+size = Vector3(15, 3, 1)
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22292, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("CapsuleMesh_80g0o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_iynte")
+
+[node name="PlayerController" parent="Player" instance=ExtResource("1_4wuf8")]
+
+[node name="Clone" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60855, 4.65803)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Clone"]
+mesh = SubResource("CapsuleMesh_80g0o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Clone"]
+shape = SubResource("CapsuleShape3D_iynte")
+
+[node name="FollowTarget" parent="Clone" node_paths=PackedStringArray("target") instance=ExtResource("2_4wuf8")]
+target_desired_distance = 2.0
+avoidance_enabled = false
+target = NodePath("../../Player")
+Speed = 7.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.652733, 0.757588, 0, -0.757588, 0.652733, 0, 14, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 0, 22, 10)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4wuf8")

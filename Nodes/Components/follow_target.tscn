@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://biudgdjvmdvmb"]
+
+[ext_resource type="Script" uid="uid://cxqjagx13pfs5" path="res://Scripts/Components/FollowTarget.cs" id="1_5hho5"]
+
+[node name="FollowTarget" type="NavigationAgent3D" node_paths=PackedStringArray("target")]
+avoidance_enabled = true
+script = ExtResource("1_5hho5")
+target = NodePath("")

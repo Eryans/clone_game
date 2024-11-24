@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0yhypts74cdu"]
+
+[ext_resource type="Script" uid="uid://bggtjoaa15g0y" path="res://Scripts/Components/PlayerController.cs" id="1_ggov0"]
+
+[node name="PlayerController" type="Node"]
+script = ExtResource("1_ggov0")
+Speed = 8.0
+JumpVelocity = 6.0
