@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b24yba6lcep07"]
+[gd_scene load_steps=8 format=3 uid="uid://b24yba6lcep07"]
 
 [ext_resource type="PackedScene" uid="uid://d0yhypts74cdu" path="res://Nodes/Components/player_controller.tscn" id="1_4wuf8"]
 [ext_resource type="PackedScene" uid="uid://biudgdjvmdvmb" path="res://Nodes/Components/follow_target.tscn" id="2_4wuf8"]
+[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Grabber.cs" id="2_s02eq"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_t8dge"]
 vertices = PackedVector3Array(-24, -0.000221014, -7, -9, -0.000221014, -7, -8, -0.000221014, -9, 2, -0.000221014, -9, 3, -0.000221014, -24, -24, -0.000221014, -24, 9, -0.000221014, -6, 0, -0.000221014, -5, 0, -0.000221014, 7, 7, -0.000221014, 7, 24, -0.000221014, 6, 8, -0.000221014, -9, 24, -0.000221014, -24, -3, -0.000221014, 24, -2, -0.000221014, 11, -8, -0.000221014, 11, -24, -0.000221014, 24, -8, -0.000221014, -5, -9, -0.000221014, 8, 9, -0.000221014, 8, 8, -0.000221014, 11, 24, -0.000221014, 24)
@@ -45,6 +46,15 @@ mesh = SubResource("CapsuleMesh_80g0o")
 shape = SubResource("CapsuleShape3D_iynte")
 
 [node name="PlayerController" parent="Player" instance=ExtResource("1_4wuf8")]
+
+[node name="Grabber" type="RayCast3D" parent="Player"]
+target_position = Vector3(0, 0, 3)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 4
+script = ExtResource("2_s02eq")
+
+[node name="Marker3D" type="Marker3D" parent="Player/Grabber"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.01142, 0)
 
 [node name="Clone" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60855, 4.65803)

@@ -22,7 +22,7 @@ public partial class PlayerController : Node
 			velocity += characterBody3D.GetGravity() * (float)delta;
 		}
 
-		if (Input.IsActionJustPressed("ui_accept") && characterBody3D.IsOnFloor())
+		if (Input.IsActionJustPressed("jump") && characterBody3D.IsOnFloor())
 		{
 			velocity.Y = JumpVelocity;
 		}
