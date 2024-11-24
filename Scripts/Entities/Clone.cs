@@ -11,7 +11,7 @@ public partial class Clone : CharacterBody3D
 	public override void _Ready()
 	{
 		followTarget = GetNode<FollowTarget>("FollowTarget");
-		player = GetTree().Root.GetChild(0).GetNode<Player>("Player");
+		player = GetTree().CurrentScene.GetNode<Player>("Player");
 	}
 	public override void _Process(double delta)
 	{

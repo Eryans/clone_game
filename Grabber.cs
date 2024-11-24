@@ -46,8 +46,7 @@ public partial class Grabber : RayCast3D
 	{
 		if (IsInstanceValid(currentHoldedObject))
 		{
-			currentHoldedObject.ApplyCentralImpulse(parent.GlobalTransform.Basis * new Vector3(0, 1, 15));
-			currentHoldedObject.Yeet();
+			currentHoldedObject.Yeet(parent.GlobalTransform.Basis * new Vector3(0, 1, -15));
 			currentHoldedObject = null;
 		}
 	}
@@ -56,7 +55,7 @@ public partial class Grabber : RayCast3D
 	{
 		currentHoldedObject = new Throwable();
 		currentHoldedObject.Setup(entity);
-		GetTree().Root.AddChild(currentHoldedObject);
+		GetTree().CurrentScene.AddChild(currentHoldedObject);
 		currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
 	}
 }

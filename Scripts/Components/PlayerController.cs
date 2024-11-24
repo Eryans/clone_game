@@ -12,11 +12,11 @@ public partial class PlayerController : Node
 	public override void _Ready()
 	{
 		characterBody3D = GetParent<CharacterBody3D>();
+		GlobalSignals.Instance.World3DMousePosition += OnWorld3DMousePositionMovement;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector3 velocity = characterBody3D.Velocity;
-
 		if (!characterBody3D.IsOnFloor())
 		{
 			velocity += characterBody3D.GetGravity() * (float)delta;
@@ -28,7 +28,7 @@ public partial class PlayerController : Node
 		}
 
 		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		Vector3 direction = (characterBody3D.Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+		Vector3 direction = new Vector3(inputDir.X, 0, inputDir.Y).Normalized();
 		if (direction != Vector3.Zero)
 		{
 			velocity.X = direction.X * Speed;
@@ -42,5 +42,14 @@ public partial class PlayerController : Node
 
 		characterBody3D.Velocity = velocity;
 		characterBody3D.MoveAndSlide();
+	}
+
+	private void OnWorld3DMousePositionMovement(Vector3 mousePos)
+	{
+		characterBody3D.LookAt(mousePos, Vector3.Up);
+		Vector3 rotation = characterBody3D.Rotation;
+		rotation.Z = 0;
+		rotation.X = 0;
+		characterBody3D.Rotation = rotation;
 	}
 }

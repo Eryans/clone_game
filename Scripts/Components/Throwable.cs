@@ -31,15 +31,16 @@ public partial class Throwable : RigidBody3D
 		AddChild(node.GetNode<CollisionShape3D>("CollisionShape3D").Duplicate());
 	}
 
-	public void Yeet()
+	public void Yeet(Vector3 yeetDirection)
 	{
+		ApplyCentralImpulse(yeetDirection);
 		_wakeUpTimer.Start(_wakeUpTimerDuration);
 		_isHolded = false;
 	}
 
 	private void OnWakeUpTimerTimeout()
 	{
-		GetTree().Root.AddChild(original);
+		GetTree().CurrentScene.AddChild(original);
 		original.GlobalPosition = GlobalPosition;
 		QueueFree();
 	}

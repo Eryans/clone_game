@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://8gafm6cw5ugl"]
+[gd_scene load_steps=6 format=3 uid="uid://8gafm6cw5ugl"]
 
 [ext_resource type="PackedScene" uid="uid://d0yhypts74cdu" path="res://Nodes/Components/player_controller.tscn" id="1_i6062"]
 [ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Grabber.cs" id="2_djihj"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_80g0o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_i6062"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iynte"]
 
@@ -12,13 +14,17 @@
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_80g0o")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.728232, 0, 0, 0, 0.206036, 0, 0, 0, 0.728232, 0, 0.433645, -0.308871)
+mesh = SubResource("BoxMesh_i6062")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_iynte")
 
 [node name="PlayerController" parent="." instance=ExtResource("1_i6062")]
 
 [node name="Grabber" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, 3)
+target_position = Vector3(0, 0, -3)
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 4
 script = ExtResource("2_djihj")

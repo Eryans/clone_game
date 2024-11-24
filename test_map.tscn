@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://b24yba6lcep07"]
+[gd_scene load_steps=9 format=3 uid="uid://b24yba6lcep07"]
 
 [ext_resource type="PackedScene" uid="uid://8gafm6cw5ugl" path="res://Nodes/Entities/player.tscn" id="1_s02eq"]
 [ext_resource type="Script" uid="uid://ct4vicpfue84h" path="res://Scripts/Entities/Player.cs" id="2_t8dge"]
 [ext_resource type="PackedScene" uid="uid://dkmjjcbm8ntdt" path="res://Nodes/Entities/clone.tscn" id="3_s02eq"]
+[ext_resource type="Script" uid="uid://bucvs87goucpe" path="res://Scripts/Entities/RayCastCamera3d.cs" id="4_qgarv"]
 [ext_resource type="Script" uid="uid://csxkwqmndi88" path="res://Scripts/Components/LerpToTarget.cs" id="4_t8dge"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_t8dge"]
@@ -81,10 +82,12 @@ collision_mask = 0
 shape = SubResource("SeparationRayShape3D_t8dge")
 spring_length = 15.0
 
-[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+[node name="RayCastCamera3D" type="Camera3D" parent="SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
 v_offset = 10.0
 fov = 90.0
+script = ExtResource("4_qgarv")
+activeRayShoot = true
 
 [node name="LerpToTarget" type="Node" parent="SpringArm3D" node_paths=PackedStringArray("Target")]
 script = ExtResource("4_t8dge")
