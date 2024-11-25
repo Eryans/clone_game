@@ -18,6 +18,7 @@ public partial class Grabber : RayCast3D
 		if (IsInstanceValid(currentHoldedObject))
 		{
 			currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
+			currentHoldedObject.Rotation = grabbedObjectPoint.GlobalRotation;
 			if (Input.IsActionJustPressed("mouse_left"))
 			{
 				ThrowCurrentHoldedObject();
@@ -26,6 +27,10 @@ public partial class Grabber : RayCast3D
 		CheckForCollision();
 	}
 
+	public bool IsHoldingObject()
+	{
+		return IsInstanceValid(currentHoldedObject);
+	}
 	private void CheckForCollision()
 	{
 		if (IsColliding())
@@ -54,6 +59,10 @@ public partial class Grabber : RayCast3D
 	private void SetCurrentHoldedObject(Node3D entity)
 	{
 		currentHoldedObject = new Throwable();
+		currentHoldedObject.SetCollisionMaskValue(1, false);
+		currentHoldedObject.SetCollisionMaskValue(2, true);
+		currentHoldedObject.SetCollisionLayerValue(1, false);
+		currentHoldedObject.SetCollisionLayerValue(2, true);
 		currentHoldedObject.Setup(entity);
 		GetTree().CurrentScene.AddChild(currentHoldedObject);
 		currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
