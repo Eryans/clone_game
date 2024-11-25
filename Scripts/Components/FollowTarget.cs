@@ -20,8 +20,9 @@ public partial class FollowTarget : NavigationAgent3D
 		if (IsNavigationFinished()) return;
 		Vector3 nextPathPosition = GetNextPathPosition();
 		Vector3 newVelocity = characterBody3D.GlobalPosition.DirectionTo(nextPathPosition) * Speed;
-		characterBody3D.Velocity = newVelocity;
+		characterBody3D.Velocity = DistanceToTarget() > 2.5 ? newVelocity : Vector3.Zero;
 		characterBody3D.MoveAndSlide();
+		LookAtTarget();
 
 	}
 	public void SetupTarget(Vector3 newTarget)
@@ -29,5 +30,13 @@ public partial class FollowTarget : NavigationAgent3D
 		_target = newTarget;
 	}
 
+	private void LookAtTarget()
+	{
+		characterBody3D.LookAt(_target, Vector3.Up);
+		Vector3 rotation = characterBody3D.Rotation;
+		rotation.Z = 0;
+		rotation.X = 0;
+		characterBody3D.Rotation = rotation;
+	}
 
 }

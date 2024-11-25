@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c6yb222eala3u"]
+
+[ext_resource type="Texture2D" uid="uid://7r0w30njs2px" path="res://Assets/Models/tinygreenguy_Ucupaint Material Color.png" id="1_xut1r"]
+
+[resource]
+resource_name = "greenguy_mat"
+cull_mode = 2
+diffuse_mode = 3
+specular_mode = 2
+albedo_texture = ExtResource("1_xut1r")
+metallic_specular = 0.0

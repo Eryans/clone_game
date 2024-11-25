@@ -27,7 +27,7 @@ public partial class Throwable : RigidBody3D
 	public void Setup(Node3D node)
 	{
 		original = node;
-		AddChild(node.GetNode<MeshInstance3D>("MeshInstance3D").Duplicate());
+		AddChild(node.GetNode<Node3D>("Model").Duplicate());
 		AddChild(node.GetNode<CollisionShape3D>("CollisionShape3D").Duplicate());
 	}
 
