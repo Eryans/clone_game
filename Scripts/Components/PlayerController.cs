@@ -7,7 +7,8 @@ public partial class PlayerController : Node
 	public float Speed = 5.0f;
 	[Export]
 	public float JumpVelocity = 4.5f;
-
+	[Export]
+	public AudioStreamPlayer WalkSoundStreamPlayer;
 	private CharacterBody3D characterBody3D;
 	public override void _Ready()
 	{
@@ -33,9 +34,11 @@ public partial class PlayerController : Node
 		{
 			velocity.X = direction.X * Speed;
 			velocity.Z = direction.Z * Speed;
+			if (IsInstanceValid(WalkSoundStreamPlayer) && !WalkSoundStreamPlayer.Playing) WalkSoundStreamPlayer.Play();
 		}
 		else
 		{
+			if (IsInstanceValid(WalkSoundStreamPlayer)) WalkSoundStreamPlayer.Stop();
 			velocity.X = Mathf.MoveToward(characterBody3D.Velocity.X, 0, Speed);
 			velocity.Z = Mathf.MoveToward(characterBody3D.Velocity.Z, 0, Speed);
 		}

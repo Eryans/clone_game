@@ -3,14 +3,18 @@ using System;
 
 public partial class Grabber : RayCast3D
 {
+	[Export]
+	public AudioStreamPlayer YeetSound;
 	private Node3D parent;
 	private Marker3D grabbedObjectPoint;
 
 	private Throwable currentHoldedObject;
+	private PackedScene _throwableScene;
 	public override void _Ready()
 	{
 		parent = GetParent<Node3D>();
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
+		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -51,14 +55,15 @@ public partial class Grabber : RayCast3D
 	{
 		if (IsInstanceValid(currentHoldedObject))
 		{
-			currentHoldedObject.Yeet(parent.GlobalTransform.Basis * new Vector3(0, 1, -15));
+			if (IsInstanceValid(YeetSound)) YeetSound.Play();
+			currentHoldedObject.Yeet(parent.GlobalTransform.Basis * new Vector3(0, 5, -15));
 			currentHoldedObject = null;
 		}
 	}
 
 	private void SetCurrentHoldedObject(Node3D entity)
 	{
-		currentHoldedObject = new Throwable();
+		currentHoldedObject = (Throwable)_throwableScene.Instantiate();
 		currentHoldedObject.SetCollisionMaskValue(1, false);
 		currentHoldedObject.SetCollisionMaskValue(2, true);
 		currentHoldedObject.SetCollisionLayerValue(1, false);

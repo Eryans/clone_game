@@ -3,10 +3,12 @@ using System;
 
 public partial class FollowTarget : NavigationAgent3D
 {
-	private Vector3 _target;
+	[Export]
+	public AudioStreamPlayer WalkSoundPlayer;
 	[Export]
 	public float Speed = 5.0f;
 	private CharacterBody3D characterBody3D;
+	private Vector3 _target;
 	public override void _Ready()
 	{
 		_target = Vector3.Zero;
@@ -20,7 +22,16 @@ public partial class FollowTarget : NavigationAgent3D
 		if (IsNavigationFinished()) return;
 		Vector3 nextPathPosition = GetNextPathPosition();
 		Vector3 newVelocity = characterBody3D.GlobalPosition.DirectionTo(nextPathPosition) * Speed;
-		characterBody3D.Velocity = DistanceToTarget() > 2.5 ? newVelocity : Vector3.Zero;
+		if (DistanceToTarget() > 2.5)
+		{
+			if (!WalkSoundPlayer.Playing) WalkSoundPlayer.Play();
+			characterBody3D.Velocity = newVelocity;
+		}
+		else
+		{
+			WalkSoundPlayer.Stop();
+			characterBody3D.Velocity = Vector3.Zero;
+		}
 		characterBody3D.MoveAndSlide();
 		LookAtTarget();
 
