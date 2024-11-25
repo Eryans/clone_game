@@ -28,12 +28,12 @@ public partial class Throwable : RigidBody3D
 	{
 		original = node;
 		AddChild(node.GetNode<Node3D>("Model").Duplicate());
-		AddChild(node.GetNode<CollisionShape3D>("CollisionShape3D").Duplicate());
 	}
 
 	public void Yeet(Vector3 yeetDirection)
 	{
 		ApplyCentralImpulse(yeetDirection);
+		AddChild(original.GetNode<CollisionShape3D>("CollisionShape3D").Duplicate());
 		_wakeUpTimer.Start(_wakeUpTimerDuration);
 		_isHolded = false;
 	}

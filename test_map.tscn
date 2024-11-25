@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://b24yba6lcep07"]
+[gd_scene load_steps=8 format=3 uid="uid://b24yba6lcep07"]
 
 [ext_resource type="PackedScene" uid="uid://8gafm6cw5ugl" path="res://Nodes/Entities/player.tscn" id="1_s02eq"]
-[ext_resource type="Script" uid="uid://ct4vicpfue84h" path="res://Scripts/Entities/Player.cs" id="2_t8dge"]
 [ext_resource type="PackedScene" uid="uid://dkmjjcbm8ntdt" path="res://Nodes/Entities/clone.tscn" id="3_s02eq"]
 [ext_resource type="Script" uid="uid://bucvs87goucpe" path="res://Scripts/Entities/RayCastCamera3d.cs" id="4_qgarv"]
 [ext_resource type="Script" uid="uid://csxkwqmndi88" path="res://Scripts/Components/LerpToTarget.cs" id="4_t8dge"]
@@ -28,41 +27,68 @@ navigation_mesh = SubResource("NavigationMesh_t8dge")
 [node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.438721, 0)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(50, 0.123, 50)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.47243, -24.3079)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(50, 7.928, 1.384)
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.47243, 24.5894)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(50, 7.928, 1.384)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -24, 2.47243, 0.589405)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(50, 7.928, 1.384)
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 25, 2.47243, 0.589405)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(50, 7.928, 1.384)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0757, 8.9306)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(15, 3, 1)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.0757, 1.9306)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(1, 5, 1)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.0757, 1.9306)
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(1, 5, 1)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0757, -7.0694)
 use_collision = true
+collision_layer = 3
+collision_mask = 3
 size = Vector3(15, 3, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_s02eq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22292, 0)
-script = ExtResource("2_t8dge")
 
 [node name="Clone" parent="." instance=ExtResource("3_s02eq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60855, 4.65803)
@@ -74,7 +100,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.55488, 3.60855, 4.65803)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.56103, 3.60855, 4.65803)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.652733, 0.757588, 0, -0.757588, 0.652733, 0, 14, 0)
+transform = Transform3D(-0.681007, -0.246569, 0.689517, 0.468683, 0.576715, 0.669131, -0.562641, 0.778848, -0.277184, 0, 14, 0)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

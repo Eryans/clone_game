@@ -3,4 +3,6 @@
 [ext_resource type="Script" uid="uid://c3p0vot0tvm02" path="res://Scripts/Components/Throwable.cs" id="1_cgnoy"]
 
 [node name="Throwable" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("1_cgnoy")

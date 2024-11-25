@@ -5,13 +5,14 @@ public partial class PlayerAnimationTree : AnimationTree
 {
     [Export]
     public float BlendSpeed = 15f;
-
-    private enum AnimationState { IDLE, WALK }
+    public bool isHolding = false;
+    private enum AnimationState { IDLE, WALK, HOLD }
     private AnimationState _currentAnimation = AnimationState.IDLE;
     private CharacterBody3D parent;
 
-    private float _IdleBlendValue = 1f;
-    private float _WalkBlendValue = 0f;
+    private float _idleBlendValue = 1f;
+    private float _walkBlendValue = 0f;
+    private float _holdBlendValue = 0f;
 
     public override void _Ready()
     {
@@ -36,19 +37,28 @@ public partial class PlayerAnimationTree : AnimationTree
         switch (_currentAnimation)
         {
             case AnimationState.IDLE:
-                _IdleBlendValue = Mathf.Lerp(_IdleBlendValue, 1f, (float)(BlendSpeed * delta));
-                _WalkBlendValue = Mathf.Lerp(_WalkBlendValue, 0f, (float)(BlendSpeed * delta));
+                _idleBlendValue = Mathf.Lerp(_idleBlendValue, 1f, (float)(BlendSpeed * delta));
+                _walkBlendValue = Mathf.Lerp(_walkBlendValue, 0f, (float)(BlendSpeed * delta));
                 break;
 
             case AnimationState.WALK:
-                _IdleBlendValue = Mathf.Lerp(_IdleBlendValue, 0f, (float)(BlendSpeed * delta));
-                _WalkBlendValue = Mathf.Lerp(_WalkBlendValue, 1f, (float)(BlendSpeed * delta));
+                _idleBlendValue = Mathf.Lerp(_idleBlendValue, 0f, (float)(BlendSpeed * delta));
+                _walkBlendValue = Mathf.Lerp(_walkBlendValue, 1f, (float)(BlendSpeed * delta));
                 break;
+        }
+        if (isHolding)
+        {
+            _holdBlendValue = Mathf.Lerp(_holdBlendValue, 1f, (float)(BlendSpeed * delta));
+        }
+        else
+        {
+            _holdBlendValue = Mathf.Lerp(_holdBlendValue, 0f, (float)(BlendSpeed * delta));
         }
     }
 
     public void UpdateTree()
     {
-        Set("parameters/WalkBlend/blend_amount", _WalkBlendValue);
+        Set("parameters/WalkBlend/blend_amount", _walkBlendValue);
+        Set("parameters/HoldBlend/blend_amount", _holdBlendValue);
     }
 }
