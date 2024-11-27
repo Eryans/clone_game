@@ -20,6 +20,10 @@ public partial class Throwable : RigidBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (_isHolded)
+		{
+			LinearVelocity = Vector3.Zero;
+		}
 		if (LinearVelocity.Length() < 1 && !_isHolded)
 		{
 			_wakeUpTimer.Paused = false;
@@ -55,7 +59,7 @@ public partial class Throwable : RigidBody3D
 	private void OnWakeUpTimerTimeout()
 	{
 		GetTree().CurrentScene.AddChild(_original);
-		_original.GlobalPosition = GlobalPosition;
+		_original.GlobalPosition = GlobalPosition + Vector3.Up;
 		QueueFree();
 	}
 }

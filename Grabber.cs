@@ -1,28 +1,32 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Grabber : RayCast3D
 {
 	[Export]
 	public AudioStreamPlayer YeetSound;
-	private Node3D parent;
+	[Export]
+	private Vector3 yeetDirection = new(0, 15, -5);
+	private CharacterBody3D parent;
 	private Marker3D grabbedObjectPoint;
 
 	private Throwable currentHoldedObject;
 	private PackedScene _throwableScene;
+
 	public override void _Ready()
 	{
-		parent = GetParent<Node3D>();
+		parent = GetParent<CharacterBody3D>();
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
 		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
+
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		if (IsInstanceValid(currentHoldedObject))
 		{
-			currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
-			currentHoldedObject.Rotation = grabbedObjectPoint.GlobalRotation;
+			currentHoldedObject.GlobalTransform = grabbedObjectPoint.GlobalTransform;
 			if (Input.IsActionJustPressed("mouse_left"))
 			{
 				ThrowCurrentHoldedObject();
@@ -56,7 +60,7 @@ public partial class Grabber : RayCast3D
 		if (IsInstanceValid(currentHoldedObject))
 		{
 			if (IsInstanceValid(YeetSound)) YeetSound.Play();
-			currentHoldedObject.Yeet(parent.GlobalTransform.Basis * new Vector3(0, 5, -15));
+			currentHoldedObject.Yeet(parent.Transform.Basis * yeetDirection);
 			currentHoldedObject = null;
 		}
 	}
@@ -72,4 +76,5 @@ public partial class Grabber : RayCast3D
 		GetTree().CurrentScene.AddChild(currentHoldedObject);
 		currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
 	}
+
 }

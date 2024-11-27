@@ -25,8 +25,8 @@ public partial class RayCastCamera3d : Camera3D
         {
             From = from,
             To = to,
+            CollisionMask = 4,
         };
-
         var result = space.IntersectRay(rayQuery);
 
         if (result.ContainsKey("position"))

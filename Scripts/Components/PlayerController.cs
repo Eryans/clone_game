@@ -49,10 +49,9 @@ public partial class PlayerController : Node
 
 	private void OnWorld3DMousePositionMovement(Vector3 mousePos)
 	{
-		characterBody3D.LookAt(mousePos, Vector3.Up);
 		Vector3 rotation = characterBody3D.Rotation;
-		rotation.Z = 0;
-		rotation.X = 0;
+		Vector2 direction = -new Vector2(mousePos.X - characterBody3D.GlobalPosition.X, mousePos.Z - characterBody3D.GlobalPosition.Z);
+		rotation.Y = Mathf.Atan2(direction.X, direction.Y);
 		characterBody3D.Rotation = rotation;
 	}
 }
