@@ -40,6 +40,7 @@ public partial class Grabber : RayCast3D
 		}
 		CheckForCollision();
 		YeetPreview(delta);
+		yeetPreviewer.Visible = IsHoldingObject();
 	}
 
 	public bool IsHoldingObject()
@@ -80,6 +81,7 @@ public partial class Grabber : RayCast3D
 		mesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
 		mesh.SurfaceSetColor(new Color(1, 0, 0, 1));
 		yeetPreviewer.SetSurfaceOverrideMaterial(0, yeetPreviewMaterial);
+
 		Vector3 startPosition = grabbedObjectPoint.Transform.Origin;
 
 		Vector3 initialVelocity = yeetDirection;
@@ -89,12 +91,12 @@ public partial class Grabber : RayCast3D
 		float accumulatedTime = 0.0f;
 
 		Vector3 previousPosition = startPosition;
-
+		Vector3 holdedObjMass = Vector3.Down; /* For now everything as a mass of 1, this will probably change later*/
 		for (int i = 0; i < yeetPreviewStep; i++)
 		{
 			accumulatedTime += (float)delta;
 
-			Vector3 currentPosition = startPosition + initialVelocity * accumulatedTime + 0.5f * gravity * accumulatedTime * accumulatedTime;
+			Vector3 currentPosition = startPosition + initialVelocity * accumulatedTime + 0.5f * gravity * accumulatedTime * accumulatedTime + holdedObjMass;
 
 			mesh.SurfaceAddVertex(previousPosition);
 			mesh.SurfaceAddVertex(currentPosition);
