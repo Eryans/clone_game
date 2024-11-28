@@ -24,13 +24,19 @@ public partial class FollowTarget : NavigationAgent3D
 		Vector3 newVelocity = characterBody3D.GlobalPosition.DirectionTo(nextPathPosition) * Speed;
 		if (DistanceToTarget() > 2.5)
 		{
-			if (!WalkSoundPlayer.Playing) WalkSoundPlayer.Play();
 			characterBody3D.Velocity = newVelocity;
 		}
 		else
 		{
-			WalkSoundPlayer.Stop();
 			characterBody3D.Velocity = Vector3.Zero;
+		}
+		if (characterBody3D.Velocity.Length() > 0)
+		{
+			if (!WalkSoundPlayer.Playing) WalkSoundPlayer.Play();
+		}
+		else
+		{
+			WalkSoundPlayer.Stop();
 		}
 		characterBody3D.MoveAndSlide();
 		LookAtTarget();
