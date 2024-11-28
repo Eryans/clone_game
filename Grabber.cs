@@ -8,17 +8,23 @@ public partial class Grabber : RayCast3D
 	public AudioStreamPlayer YeetSound;
 	[Export]
 	private Vector3 yeetDirection = new(0, 15, -5);
+	[Export]
+	private int yeetPreviewStep = 40;
 	private CharacterBody3D parent;
 	private Marker3D grabbedObjectPoint;
 
 	private Throwable currentHoldedObject;
 	private PackedScene _throwableScene;
-
+	private MeshInstance3D yeetPreviewer = new();
+	private Material yeetPreviewMaterial;
 	public override void _Ready()
 	{
 		parent = GetParent<CharacterBody3D>();
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
 		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
+		AddChild(yeetPreviewer);
+		yeetPreviewer.Mesh = new ImmediateMesh();
+		yeetPreviewMaterial = GD.Load<Material>("res://Assets/Materials/preview_mat.tres");
 
 	}
 
@@ -33,6 +39,7 @@ public partial class Grabber : RayCast3D
 			}
 		}
 		CheckForCollision();
+		YeetPreview(delta);
 	}
 
 	public bool IsHoldingObject()
@@ -63,6 +70,39 @@ public partial class Grabber : RayCast3D
 			currentHoldedObject.Yeet(parent.Transform.Basis * yeetDirection);
 			currentHoldedObject = null;
 		}
+	}
+
+	private void YeetPreview(double delta)
+	{
+		ImmediateMesh mesh = (ImmediateMesh)yeetPreviewer.Mesh;
+		mesh.ClearSurfaces();
+
+		mesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
+		mesh.SurfaceSetColor(new Color(1, 0, 0, 1));
+		yeetPreviewer.SetSurfaceOverrideMaterial(0, yeetPreviewMaterial);
+		Vector3 startPosition = grabbedObjectPoint.Transform.Origin;
+
+		Vector3 initialVelocity = yeetDirection;
+
+		Vector3 gravity = parent.GetGravity();
+
+		float accumulatedTime = 0.0f;
+
+		Vector3 previousPosition = startPosition;
+
+		for (int i = 0; i < yeetPreviewStep; i++)
+		{
+			accumulatedTime += (float)delta;
+
+			Vector3 currentPosition = startPosition + initialVelocity * accumulatedTime + 0.5f * gravity * accumulatedTime * accumulatedTime;
+
+			mesh.SurfaceAddVertex(previousPosition);
+			mesh.SurfaceAddVertex(currentPosition);
+
+			previousPosition = currentPosition;
+		}
+
+		mesh.SurfaceEnd();
 	}
 
 	private void SetCurrentHoldedObject(Node3D entity)

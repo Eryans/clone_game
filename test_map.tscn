@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b24yba6lcep07"]
+[gd_scene load_steps=10 format=3 uid="uid://b24yba6lcep07"]
 
 [ext_resource type="PackedScene" uid="uid://8gafm6cw5ugl" path="res://Nodes/Entities/player.tscn" id="1_s02eq"]
 [ext_resource type="PackedScene" uid="uid://dkmjjcbm8ntdt" path="res://Nodes/Entities/clone.tscn" id="3_s02eq"]
@@ -10,7 +10,14 @@ vertices = PackedVector3Array(-22, 0.00843287, -7, -9, 0.00843287, -7, -8, 0.008
 polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(6, 5, 4), PackedInt32Array(4, 7, 6), PackedInt32Array(6, 7, 8), PackedInt32Array(2, 3, 7), PackedInt32Array(7, 3, 8), PackedInt32Array(10, 9, 11), PackedInt32Array(11, 9, 12), PackedInt32Array(1, 13, 0), PackedInt32Array(0, 13, 14), PackedInt32Array(0, 14, 12), PackedInt32Array(16, 15, 13), PackedInt32Array(13, 15, 14), PackedInt32Array(14, 11, 12), PackedInt32Array(16, 5, 15), PackedInt32Array(15, 5, 17), PackedInt32Array(6, 19, 18), PackedInt32Array(18, 19, 9), PackedInt32Array(17, 5, 18), PackedInt32Array(18, 5, 6), PackedInt32Array(9, 10, 18), PackedInt32Array(23, 22, 20), PackedInt32Array(20, 22, 21)]
 cell_size = 1.0
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_t8dge"]
+
+[sub_resource type="Sky" id="Sky_qgarv"]
+sky_material = SubResource("ProceduralSkyMaterial_t8dge")
+
 [sub_resource type="Environment" id="Environment_4wuf8"]
+background_mode = 2
+sky = SubResource("Sky_qgarv")
 tonemap_mode = 2
 ssao_enabled = true
 ssil_enabled = true
@@ -29,7 +36,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.438721, 0)
 use_collision = true
 collision_layer = 7
 collision_mask = 7
-size = Vector3(150, 0.123, 50)
+size = Vector3(150, 0.123, 150)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.47243, -24.3079)

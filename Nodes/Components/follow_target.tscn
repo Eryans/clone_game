@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cxqjagx13pfs5" path="res://Scripts/Components/FollowTarget.cs" id="1_5hho5"]
 
-[node name="FollowTarget" type="NavigationAgent3D" node_paths=PackedStringArray("target")]
+[node name="FollowTarget" type="NavigationAgent3D"]
 avoidance_enabled = true
 script = ExtResource("1_5hho5")
-target = NodePath("")
