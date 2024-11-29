@@ -8,6 +8,8 @@ public partial class Grabber : RayCast3D
 	private Vector3 yeetDirection = new(0, 15, -5);
 	[Export]
 	private int yeetPreviewStep = 20;
+	[Export]
+	private float yeetDirectionChangeAmount = .25f;
 	private CharacterBody3D parent;
 	private Marker3D grabbedObjectPoint;
 
@@ -27,6 +29,41 @@ public partial class Grabber : RayCast3D
 		}
 	}
 
+	public override void _UnhandledInput(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mb && IsHoldingObject())
+		{
+			if (mb.ButtonIndex == MouseButton.WheelUp)
+			{
+				if (Input.IsActionPressed("shift"))
+				{
+					yeetDirection.Y += yeetDirectionChangeAmount;
+				}
+				else
+				{
+					yeetDirection.Z -= yeetDirectionChangeAmount;
+				}
+				YeetPreview(GetPhysicsProcessDeltaTime());
+			}
+			else if (mb.ButtonIndex == MouseButton.WheelDown)
+			{
+				if (Input.IsActionPressed("shift"))
+				{
+					yeetDirection.Y -= yeetDirectionChangeAmount;
+				}
+				else
+				{
+					yeetDirection.Z += yeetDirectionChangeAmount;
+				}
+				YeetPreview(GetPhysicsProcessDeltaTime());
+			}
+		}
+	}
+	public override void _Process(double delta)
+	{
+		yeetDirection.Z = Mathf.Clamp(yeetDirection.Z, -10, -2);
+		yeetDirection.Y = Mathf.Clamp(yeetDirection.Y, 2, 10);
+	}
 	public override void _PhysicsProcess(double delta)
 	{
 		if (IsInstanceValid(currentHoldedObject))
@@ -40,7 +77,7 @@ public partial class Grabber : RayCast3D
 		CheckForCollision();
 		if (Input.IsActionJustPressed("action"))
 		{
-			YeetPreview(delta);
+			YeetPreview(GetPhysicsProcessDeltaTime());
 		}
 		yeetPreviewerPath.Visible = IsHoldingObject();
 	}
