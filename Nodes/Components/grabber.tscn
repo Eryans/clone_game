@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://bryfu7qj3p31p"]
+
+[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Grabber.cs" id="1_vg3gg"]
+[ext_resource type="Material" uid="uid://b7ndkwhnqkvo1" path="res://Assets/Materials/preview_mat.tres" id="2_2wle8"]
+
+[sub_resource type="Curve3D" id="Curve3D_d47nd"]
+
+[node name="Grabber" type="RayCast3D"]
+transform = Transform3D(1.18723, 0, 0, 0, 1.18723, 0, 0, 0, 1.18723, 0, 0, 0)
+target_position = Vector3(0, 0, -3)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 3
+script = ExtResource("1_vg3gg")
+yeetDirection = Vector3(0, 7, -5)
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(0.846649, 0, 0, 0, -3.70082e-08, -0.846649, 0, 0.846649, -3.70082e-08, 0, 0.870469, 0)
+
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_d47nd")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Path3D"]
+material_override = ExtResource("2_2wle8")
+polygon = PackedVector2Array(-0.15, 0, -0.15, 0.15, 0.15, 0.15, 0.15, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+smooth_faces = true

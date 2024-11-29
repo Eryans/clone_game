@@ -95,7 +95,7 @@ public partial class Grabber : RayCast3D
 			{
 				if (Input.IsActionJustPressed("action") && !IsInstanceValid(currentHoldedObject))
 				{
-					SetCurrentHoldedObject((Node3D)cb.Duplicate());
+					SetCurrentHoldedObject((Node3D)cb.Duplicate(7));
 					cb.QueueFree();
 				}
 			}

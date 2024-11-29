@@ -44,7 +44,7 @@ public partial class Throwable : RigidBody3D
 	public void Setup(Node3D node)
 	{
 		_original = node;
-		AddChild(node.GetNode<Node3D>("Model").Duplicate());
+		AddChild(node.GetNode<Node3D>("Model").Duplicate(0));
 	}
 
 	public void Yeet(Vector3 yeetDirection)
