@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Collections.Generic;
 
 public partial class Grabber : RayCast3D
 {
@@ -9,23 +7,24 @@ public partial class Grabber : RayCast3D
 	[Export]
 	private Vector3 yeetDirection = new(0, 15, -5);
 	[Export]
-	private int yeetPreviewStep = 40;
+	private int yeetPreviewStep = 20;
 	private CharacterBody3D parent;
 	private Marker3D grabbedObjectPoint;
 
 	private Throwable currentHoldedObject;
 	private PackedScene _throwableScene;
-	private MeshInstance3D yeetPreviewer = new();
-	private Material yeetPreviewMaterial;
+
+	private Path3D yeetPreviewerPath;
 	public override void _Ready()
 	{
 		parent = GetParent<CharacterBody3D>();
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
 		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
-		AddChild(yeetPreviewer);
-		yeetPreviewer.Mesh = new ImmediateMesh();
-		yeetPreviewMaterial = GD.Load<Material>("res://Assets/Materials/preview_mat.tres");
-
+		yeetPreviewerPath = GetNode<Path3D>("Path3D");
+		for (int i = 0; i < yeetPreviewStep; i++)
+		{
+			yeetPreviewerPath.Curve.AddPoint(Transform.Origin + Vector3.Up * i);
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -39,8 +38,11 @@ public partial class Grabber : RayCast3D
 			}
 		}
 		CheckForCollision();
-		YeetPreview(delta);
-		yeetPreviewer.Visible = IsHoldingObject();
+		if (Input.IsActionJustPressed("action"))
+		{
+			YeetPreview(delta);
+		}
+		yeetPreviewerPath.Visible = IsHoldingObject();
 	}
 
 	public bool IsHoldingObject()
@@ -75,36 +77,21 @@ public partial class Grabber : RayCast3D
 
 	private void YeetPreview(double delta)
 	{
-		ImmediateMesh mesh = (ImmediateMesh)yeetPreviewer.Mesh;
-		mesh.ClearSurfaces();
-
-		mesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
-		mesh.SurfaceSetColor(new Color(1, 0, 0, 1));
-		yeetPreviewer.SetSurfaceOverrideMaterial(0, yeetPreviewMaterial);
-
 		Vector3 startPosition = grabbedObjectPoint.Transform.Origin;
-
-		Vector3 initialVelocity = yeetDirection;
-
 		Vector3 gravity = parent.GetGravity();
 
 		float accumulatedTime = 0.0f;
 
-		Vector3 previousPosition = startPosition;
-		Vector3 holdedObjMass = Vector3.Down; /* For now everything as a mass of 1, this will probably change later*/
 		for (int i = 0; i < yeetPreviewStep; i++)
 		{
-			accumulatedTime += (float)delta;
+			accumulatedTime += (float)delta * 4;
 
-			Vector3 currentPosition = startPosition + initialVelocity * accumulatedTime + 0.5f * gravity * accumulatedTime * accumulatedTime + holdedObjMass;
+			Vector3 currentPosition = startPosition
+									+ yeetDirection * accumulatedTime + 0.5f
+									* gravity * accumulatedTime * accumulatedTime + Vector3.Down;
 
-			mesh.SurfaceAddVertex(previousPosition);
-			mesh.SurfaceAddVertex(currentPosition);
-
-			previousPosition = currentPosition;
+			yeetPreviewerPath.Curve.SetPointPosition(i, yeetPreviewerPath.ToLocal(currentPosition));
 		}
-
-		mesh.SurfaceEnd();
 	}
 
 	private void SetCurrentHoldedObject(Node3D entity)
