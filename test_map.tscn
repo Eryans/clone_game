@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://8gafm6cw5ugl" path="res://Nodes/Entities/player.tscn" id="1_s02eq"]
 [ext_resource type="PackedScene" uid="uid://dkmjjcbm8ntdt" path="res://Nodes/Entities/clone.tscn" id="3_s02eq"]
 [ext_resource type="Script" uid="uid://bucvs87goucpe" path="res://Scripts/Entities/RayCastCamera3d.cs" id="4_qgarv"]
-[ext_resource type="Script" uid="uid://csxkwqmndi88" path="res://Scripts/Components/LerpToTarget.cs" id="4_t8dge"]
+[ext_resource type="Script" uid="uid://csxkwqmndi88" path="res://Scripts/utils/LerpToTarget.cs" id="4_t8dge"]
 [ext_resource type="Script" uid="uid://dycsyxqfi4ewj" path="res://Scripts/Entities/EnemyAI.cs" id="5_qgarv"]
 [ext_resource type="Script" uid="uid://b1ggfn050k8lv" path="res://Scripts/utils/StateMachine/StateMachine.cs" id="6_gqtbx"]
 [ext_resource type="Script" uid="uid://dd1er0fyvb1br" path="res://Scripts/Behaviors/Roam.cs" id="7_5354r"]

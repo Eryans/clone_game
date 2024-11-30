@@ -20,6 +20,10 @@ public partial class EnemyAI : Node
 
     public override void _PhysicsProcess(double delta)
     {
+        TargetDetection(delta);
+    }
+    private void TargetDetection(double delta)
+    {
         if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < _distanceToSeePlayer)
         {
             Vector3 directionToTarget = _parent.GlobalPosition.DirectionTo(_target.GlobalPosition);
@@ -37,5 +41,4 @@ public partial class EnemyAI : Node
             }
         }
     }
-
 }
