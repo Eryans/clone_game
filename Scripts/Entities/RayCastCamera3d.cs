@@ -4,7 +4,7 @@ using Godot;
 public partial class RayCastCamera3d : Camera3D
 {
     [Export]
-    public bool activeRayShoot = false;
+    public bool activeRayShoot = true;
     public static event Action<Vector3> MouseMoved;
     public override void _PhysicsProcess(double delta)
     {

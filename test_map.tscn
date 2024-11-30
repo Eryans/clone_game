@@ -123,7 +123,6 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 v_offset = 10.0
 fov = 55.0
 script = ExtResource("4_qgarv")
-activeRayShoot = true
 
 [node name="LerpToTarget" type="Node" parent="SpringArm3D" node_paths=PackedStringArray("Target")]
 script = ExtResource("4_t8dge")

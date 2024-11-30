@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bryfu7qj3p31p"]
 
-[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Grabber.cs" id="1_vg3gg"]
+[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Scripts/Components/Grabber.cs" id="1_vg3gg"]
 [ext_resource type="Material" uid="uid://b7ndkwhnqkvo1" path="res://Assets/Materials/preview_mat.tres" id="2_2wle8"]
 
 [sub_resource type="Curve3D" id="Curve3D_d47nd"]
