@@ -20,15 +20,18 @@ public partial class Chase : State
     {
         if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < 20)
         {
-            ChaseTarget();
+            ChaseTarget(delta);
         }
         else
         {
             ChangeToState("Roam");
         }
     }
-
-    private void ChaseTarget()
+    public void SetNewTarget(Node3D newTarget)
+    {
+        _target = newTarget;
+    }
+    private void ChaseTarget(double delta)
     {
         if (NavigationServer3D.MapGetIterationId(_navAgent.GetNavigationMap()) == 0) return;
         _navAgent.TargetPosition = _target.GlobalPosition;
@@ -36,7 +39,12 @@ public partial class Chase : State
         Vector3 nextPathPosition = _navAgent.GetNextPathPosition();
         Vector3 newVelocity = _parent.GlobalPosition.DirectionTo(nextPathPosition) * speed;
         _parent.Velocity = newVelocity;
-        _parent.Rotation = _parent.Rotation with { Y = Utils.LookAtTarget(_parent.GlobalPosition, _target.GlobalPosition) };
+        _parent.Rotation = _parent.Rotation with
+        {
+            Y = Mathf.LerpAngle(_parent.Rotation.Y,
+           Utils.LookAtTarget(_parent.GlobalPosition, _navAgent.TargetPosition),
+           (float)delta)
+        };
         _parent.MoveAndSlide();
     }
 }

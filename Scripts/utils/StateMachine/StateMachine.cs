@@ -5,7 +5,7 @@ using Godot.Collections;
 public partial class StateMachine : Node
 {
     [Export]
-    private State _currentState;
+    public State CurrentState { get; private set; }
     private readonly Dictionary<string, State> _states = new();
 
     public override void _Ready()
@@ -19,24 +19,24 @@ public partial class StateMachine : Node
                 stateChild.TransitionState += ChangeState;
             }
         }
-        _currentState.Enter();
+        CurrentState.Enter();
     }
 
     public override void _Process(double delta)
     {
-        if (IsInstanceValid(_currentState)) _currentState.Process(delta);
+        if (IsInstanceValid(CurrentState)) CurrentState.Process(delta);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (IsInstanceValid(_currentState)) _currentState.PhysicsProcess(delta);
+        if (IsInstanceValid(CurrentState)) CurrentState.PhysicsProcess(delta);
     }
 
     public void ChangeState(string newState)
     {
         if (_states[newState] == null) return;
-        _currentState.Exit();
-        _currentState = _states[newState];
-        _currentState.Enter();
+        CurrentState.Exit();
+        CurrentState = _states[newState];
+        CurrentState.Enter();
     }
 }

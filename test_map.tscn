@@ -160,27 +160,33 @@ mesh = SubResource("BoxMesh_qgarv")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EnemyNPC"]
 shape = SubResource("CapsuleShape3D_ssfg1")
 
-[node name="EnemyNA" type="NavigationAgent3D" parent="EnemyNPC"]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="EnemyNPC"]
 path_desired_distance = 2.0
 
-[node name="AI" type="Node" parent="EnemyNPC" node_paths=PackedStringArray("_navAgent")]
-script = ExtResource("5_qgarv")
-_navAgent = NodePath("../EnemyNA")
+[node name="RayCast3D" type="RayCast3D" parent="EnemyNPC"]
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 4
 
-[node name="StateMachine" type="Node" parent="EnemyNPC" node_paths=PackedStringArray("_currentState")]
+[node name="AI" type="Node" parent="EnemyNPC" node_paths=PackedStringArray("_target", "stateMachine", "rayCast3D")]
+script = ExtResource("5_qgarv")
+_target = NodePath("../../Player")
+stateMachine = NodePath("../StateMachine")
+rayCast3D = NodePath("../RayCast3D")
+
+[node name="StateMachine" type="Node" parent="EnemyNPC" node_paths=PackedStringArray("CurrentState")]
 script = ExtResource("6_gqtbx")
-_currentState = NodePath("Roam")
+CurrentState = NodePath("Roam")
 metadata/_custom_type_script = ExtResource("6_gqtbx")
 
 [node name="Roam" type="Node" parent="EnemyNPC/StateMachine" node_paths=PackedStringArray("_navAgent", "_parent")]
 script = ExtResource("7_5354r")
-_navAgent = NodePath("../../EnemyNA")
+_navAgent = NodePath("../../NavigationAgent3D")
 _parent = NodePath("../..")
 metadata/_custom_type_script = ExtResource("7_bu3ac")
 
 [node name="Chase" type="Node" parent="EnemyNPC/StateMachine" node_paths=PackedStringArray("_navAgent", "_target", "_parent")]
 script = ExtResource("8_5354r")
-_navAgent = NodePath("../../EnemyNA")
+_navAgent = NodePath("../../NavigationAgent3D")
 _target = NodePath("../../../Player")
 _parent = NodePath("../..")
 metadata/_custom_type_script = ExtResource("7_bu3ac")
