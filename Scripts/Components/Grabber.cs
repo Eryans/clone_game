@@ -2,6 +2,7 @@ using Godot;
 
 public partial class Grabber : RayCast3D
 {
+	[ExportGroup("Yeet")]
 	[Export]
 	public AudioStreamPlayer YeetSound;
 	[Export]

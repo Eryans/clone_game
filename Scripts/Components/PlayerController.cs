@@ -9,21 +9,21 @@ public partial class PlayerController : Node
 	public float JumpVelocity = 4.5f;
 	[Export]
 	public AudioStreamPlayer WalkSoundStreamPlayer;
-	private CharacterBody3D characterBody3D;
+	private CharacterBody3D _parent;
 	public override void _Ready()
 	{
-		characterBody3D = GetParent<CharacterBody3D>();
+		_parent = GetParent<CharacterBody3D>();
 		RayCastCamera3d.MouseMoved += OnWorld3DMousePositionMovement;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector3 velocity = characterBody3D.Velocity;
-		if (!characterBody3D.IsOnFloor())
+		Vector3 velocity = _parent.Velocity;
+		if (!_parent.IsOnFloor())
 		{
-			velocity += characterBody3D.GetGravity() * (float)delta;
+			velocity += _parent.GetGravity() * (float)delta;
 		}
 
-		if (Input.IsActionJustPressed("jump") && characterBody3D.IsOnFloor())
+		if (Input.IsActionJustPressed("jump") && _parent.IsOnFloor())
 		{
 			velocity.Y = JumpVelocity;
 		}
@@ -39,19 +39,16 @@ public partial class PlayerController : Node
 		else
 		{
 			if (IsInstanceValid(WalkSoundStreamPlayer)) WalkSoundStreamPlayer.Stop();
-			velocity.X = Mathf.MoveToward(characterBody3D.Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(characterBody3D.Velocity.Z, 0, Speed);
+			velocity.X = Mathf.MoveToward(_parent.Velocity.X, 0, Speed);
+			velocity.Z = Mathf.MoveToward(_parent.Velocity.Z, 0, Speed);
 		}
 
-		characterBody3D.Velocity = velocity;
-		characterBody3D.MoveAndSlide();
+		_parent.Velocity = velocity;
+		_parent.MoveAndSlide();
 	}
 
 	private void OnWorld3DMousePositionMovement(Vector3 mousePos)
 	{
-		Vector3 rotation = characterBody3D.Rotation;
-		Vector2 direction = new(characterBody3D.GlobalPosition.X - mousePos.X, characterBody3D.GlobalPosition.Z - mousePos.Z);
-		rotation.Y = Mathf.Atan2(direction.X, direction.Y);
-		characterBody3D.Rotation = rotation;
+		_parent.Rotation = _parent.Rotation with { Y = Utils.LookAtTarget(_parent.GlobalPosition, mousePos) };
 	}
 }

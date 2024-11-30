@@ -7,12 +7,12 @@ public partial class FollowTarget : NavigationAgent3D
 	public AudioStreamPlayer WalkSoundPlayer;
 	[Export]
 	public float Speed = 5.0f;
-	private CharacterBody3D characterBody3D;
+	private CharacterBody3D _parent;
 	private Vector3 _target;
 	public override void _Ready()
 	{
 		_target = Vector3.Zero;
-		characterBody3D = GetParent<CharacterBody3D>();
+		_parent = GetParent<CharacterBody3D>();
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -21,16 +21,16 @@ public partial class FollowTarget : NavigationAgent3D
 		if (NavigationServer3D.MapGetIterationId(GetNavigationMap()) == 0) return;
 		if (IsNavigationFinished()) return;
 		Vector3 nextPathPosition = GetNextPathPosition();
-		Vector3 newVelocity = characterBody3D.GlobalPosition.DirectionTo(nextPathPosition) * Speed;
+		Vector3 newVelocity = _parent.GlobalPosition.DirectionTo(nextPathPosition) * Speed;
 		if (DistanceToTarget() > 2.5)
 		{
-			characterBody3D.Velocity = newVelocity;
+			_parent.Velocity = newVelocity;
 		}
 		else
 		{
-			characterBody3D.Velocity = Vector3.Zero;
+			_parent.Velocity = Vector3.Zero;
 		}
-		if (characterBody3D.Velocity.Length() > 0)
+		if (_parent.Velocity.Length() > 0)
 		{
 			if (!WalkSoundPlayer.Playing) WalkSoundPlayer.Play();
 		}
@@ -38,7 +38,7 @@ public partial class FollowTarget : NavigationAgent3D
 		{
 			WalkSoundPlayer.Stop();
 		}
-		characterBody3D.MoveAndSlide();
+		_parent.MoveAndSlide();
 		LookAtTarget();
 
 	}
@@ -49,11 +49,7 @@ public partial class FollowTarget : NavigationAgent3D
 
 	private void LookAtTarget()
 	{
-		characterBody3D.LookAt(_target, Vector3.Up);
-		Vector3 rotation = characterBody3D.Rotation;
-		rotation.Z = 0;
-		rotation.X = 0;
-		characterBody3D.Rotation = rotation;
+		_parent.Rotation = _parent.Rotation with { Y = Utils.LookAtTarget(_parent.GlobalPosition, _target) };
 	}
 
 }
