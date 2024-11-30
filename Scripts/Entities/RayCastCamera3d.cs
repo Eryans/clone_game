@@ -1,15 +1,16 @@
+using System;
 using Godot;
 
 public partial class RayCastCamera3d : Camera3D
 {
     [Export]
     public bool activeRayShoot = false;
-
+    public static event Action<Vector3> MouseMoved;
     public override void _PhysicsProcess(double delta)
     {
         if (activeRayShoot)
         {
-            GlobalSignals.Instance.EmitNewWorld3DMousePosition(ShootRay());
+            MouseMoved?.Invoke(ShootRay());
         }
     }
     public Vector3 ShootRay()

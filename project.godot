@@ -15,10 +15,6 @@ run/main_scene="res://test_map.tscn"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-GlobalSignals="*res://Scripts/Global/GlobalSignals.cs"
-
 [display]
 
 window/size/always_on_top=true

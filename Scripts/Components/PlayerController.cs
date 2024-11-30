@@ -13,7 +13,7 @@ public partial class PlayerController : Node
 	public override void _Ready()
 	{
 		characterBody3D = GetParent<CharacterBody3D>();
-		GlobalSignals.Instance.World3DMousePosition += OnWorld3DMousePositionMovement;
+		RayCastCamera3d.MouseMoved += OnWorld3DMousePositionMovement;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
