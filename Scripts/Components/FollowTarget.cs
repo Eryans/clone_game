@@ -7,6 +7,8 @@ public partial class FollowTarget : NavigationAgent3D
 	public AudioStreamPlayer WalkSoundPlayer;
 	[Export]
 	public float Speed = 5.0f;
+	[Export]
+	private float _rotationSpeed = 3f;
 	private CharacterBody3D _parent;
 	private Vector3 _target;
 	public override void _Ready()
@@ -49,7 +51,7 @@ public partial class FollowTarget : NavigationAgent3D
 
 	private void LookAtTarget()
 	{
-		_parent.Rotation = _parent.Rotation with { Y = Utils.LookAtTarget(_parent.GlobalPosition, _target) };
+		_parent.Rotation = _parent.Rotation with { Y = Mathf.LerpAngle(_parent.Rotation.Y, Utils.LookAtTarget(_parent.GlobalPosition, _target), (float)GetPhysicsProcessDeltaTime() * _rotationSpeed) };
 	}
 
 }

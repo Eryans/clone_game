@@ -9,6 +9,8 @@ public partial class PlayerController : Node
 	public float JumpVelocity = 4.5f;
 	[Export]
 	public AudioStreamPlayer WalkSoundStreamPlayer;
+	[Export]
+	private float _rotationSpeed = 3f;
 	private CharacterBody3D _parent;
 	public override void _Ready()
 	{
@@ -49,6 +51,6 @@ public partial class PlayerController : Node
 
 	private void OnWorld3DMousePositionMovement(Vector3 mousePos)
 	{
-		_parent.Rotation = _parent.Rotation with { Y = Utils.LookAtTarget(_parent.GlobalPosition, mousePos) };
+		_parent.Rotation = _parent.Rotation with { Y = Mathf.LerpAngle(_parent.Rotation.Y, Utils.LookAtTarget(_parent.GlobalPosition, mousePos), (float)GetPhysicsProcessDeltaTime() * _rotationSpeed) };
 	}
 }
