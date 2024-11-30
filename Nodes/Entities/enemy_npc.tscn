@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=3 uid="uid://imiolqrdu4bw"]
+
+[ext_resource type="Script" uid="uid://dycsyxqfi4ewj" path="res://Scripts/Entities/EnemyAI.cs" id="1_4vsts"]
+[ext_resource type="Script" uid="uid://b1ggfn050k8lv" path="res://Scripts/utils/StateMachine/StateMachine.cs" id="2_tjuhc"]
+[ext_resource type="Script" uid="uid://dd1er0fyvb1br" path="res://Scripts/Behaviors/Roam.cs" id="3_4fe8v"]
+[ext_resource type="Script" uid="uid://sqoamm70myjd" path="res://Scripts/utils/StateMachine/State.cs" id="4_cerxo"]
+[ext_resource type="Script" uid="uid://edch8dk5qnfb" path="res://Scripts/Behaviors/Chase.cs" id="5_pvebh"]
+[ext_resource type="Script" uid="uid://4euq4d0k28bk" path="res://Scripts/Components/Health.cs" id="6_4fe8v"]
+[ext_resource type="Script" uid="uid://b4ganks7axkas" path="res://Scripts/Behaviors/Dead.cs" id="6_cerxo"]
+[ext_resource type="Script" uid="uid://dhwkec4echr8a" path="res://Scripts/Components/Hitbox.cs" id="7_cerxo"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_r0pc2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qgarv"]
+size = Vector3(0.75, 0.25, 0.25)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ssfg1"]
+radius = 1.0
+height = 4.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pvebh"]
+size = Vector3(2.25, 2.25, 2.25)
+
+[node name="EnemyNPC" type="CharacterBody3D"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_r0pc2")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.805602, -0.901943)
+mesh = SubResource("BoxMesh_qgarv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ssfg1")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 2.0
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 4
+
+[node name="AI" type="Node" parent="." node_paths=PackedStringArray("stateMachine", "rayCast3D", "_health")]
+script = ExtResource("1_4vsts")
+stateMachine = NodePath("../StateMachine")
+rayCast3D = NodePath("../RayCast3D")
+_health = NodePath("../Health")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("6_4fe8v")
+_currentHealth = 10
+metadata/_custom_type_script = ExtResource("6_4fe8v")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("CurrentState")]
+script = ExtResource("2_tjuhc")
+CurrentState = NodePath("Roam")
+metadata/_custom_type_script = ExtResource("2_tjuhc")
+
+[node name="Roam" type="Node" parent="StateMachine" node_paths=PackedStringArray("_navAgent", "_parent")]
+script = ExtResource("3_4fe8v")
+_navAgent = NodePath("../../NavigationAgent3D")
+_parent = NodePath("../..")
+metadata/_custom_type_script = ExtResource("4_cerxo")
+
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("_navAgent", "_parent")]
+script = ExtResource("5_pvebh")
+_navAgent = NodePath("../../NavigationAgent3D")
+_parent = NodePath("../..")
+metadata/_custom_type_script = ExtResource("4_cerxo")
+
+[node name="Dead" type="Node" parent="StateMachine" node_paths=PackedStringArray("_parent", "_navAgent")]
+script = ExtResource("6_cerxo")
+_parent = NodePath("../..")
+_navAgent = NodePath("../../NavigationAgent3D")
+metadata/_custom_type_script = ExtResource("4_cerxo")
+
+[node name="Hitbox" type="Area3D" parent="." node_paths=PackedStringArray("_health")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.893187, 0)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("7_cerxo")
+_health = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("BoxShape3D_pvebh")

@@ -12,10 +12,6 @@ public partial class Chase : State
     [Export]
     private float speed = 3.0f;
 
-    public override void Enter()
-    {
-
-    }
     public override void PhysicsProcess(double delta)
     {
         if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < 20)
@@ -26,6 +22,9 @@ public partial class Chase : State
         {
             ChangeToState("Roam");
         }
+    }
+    public override void Exit()
+    {
     }
     public void SetNewTarget(Node3D newTarget)
     {

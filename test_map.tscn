@@ -1,14 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://b24yba6lcep07"]
+[gd_scene load_steps=11 format=3 uid="uid://b24yba6lcep07"]
 
 [ext_resource type="PackedScene" uid="uid://8gafm6cw5ugl" path="res://Nodes/Entities/player.tscn" id="1_s02eq"]
 [ext_resource type="PackedScene" uid="uid://dkmjjcbm8ntdt" path="res://Nodes/Entities/clone.tscn" id="3_s02eq"]
 [ext_resource type="Script" uid="uid://bucvs87goucpe" path="res://Scripts/Entities/RayCastCamera3d.cs" id="4_qgarv"]
 [ext_resource type="Script" uid="uid://csxkwqmndi88" path="res://Scripts/utils/LerpToTarget.cs" id="4_t8dge"]
-[ext_resource type="Script" uid="uid://dycsyxqfi4ewj" path="res://Scripts/Entities/EnemyAI.cs" id="5_qgarv"]
-[ext_resource type="Script" uid="uid://b1ggfn050k8lv" path="res://Scripts/utils/StateMachine/StateMachine.cs" id="6_gqtbx"]
-[ext_resource type="Script" uid="uid://dd1er0fyvb1br" path="res://Scripts/Behaviors/Roam.cs" id="7_5354r"]
-[ext_resource type="Script" uid="uid://sqoamm70myjd" path="res://Scripts/utils/StateMachine/State.cs" id="7_bu3ac"]
-[ext_resource type="Script" uid="uid://edch8dk5qnfb" path="res://Scripts/Behaviors/Chase.cs" id="8_5354r"]
+[ext_resource type="PackedScene" uid="uid://imiolqrdu4bw" path="res://Nodes/Entities/enemy_npc.tscn" id="5_qgarv"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_t8dge"]
 vertices = PackedVector3Array(-8.75, 0.00843, 7.5, -6.25, 0.00843, 6.25, -6.25, 0.00843, 3.75, -6.25, 0.00843, 0, -2.5, 0.00843, 1.25, 0, 0.00843, 1.25, 0, 0.00843, -5, -7.5, 0.00843, -5, -8.75, 0.00843, -8.75, 1.25, 0.00843, -10, 1.25, 0.00843, -21.25, -21.25, 0.00843, -21.25, -21.25, 0.00843, 22.5, -7.5, 0.00843, 11.25, 1.25, 0.00843, 22.5, 1.25, 0.00843, 11.25, 5, 0.00843, 3.75, 5, 0.00843, 6.25, 8.75, 0.00843, 6.25, 1.25, 0.00843, 1.25, 5, 0.00843, 0, 10, 0.00843, -6.25, 10, 0.00843, 10, 22.5, 0.00843, 22.5, 22.5, 0.00843, -21.25, 8.75, 0.00843, -10)
@@ -31,15 +27,6 @@ sdfgi_enabled = true
 sdfgi_use_occlusion = true
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_t8dge"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_r0pc2"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_qgarv"]
-size = Vector3(0.75, 0.25, 0.25)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ssfg1"]
-radius = 1.0
-height = 4.0
 
 [node name="TestMap" type="Node3D"]
 
@@ -136,7 +123,7 @@ spring_length = 14.0
 [node name="RayCastCamera3D" type="Camera3D" parent="SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
 v_offset = 10.0
-fov = 55.0
+fov = 70.0
 script = ExtResource("4_qgarv")
 
 [node name="LerpToTarget" type="Node" parent="SpringArm3D" node_paths=PackedStringArray("Target")]
@@ -144,49 +131,5 @@ script = ExtResource("4_t8dge")
 Target = NodePath("../../Player")
 LerpWeight = 0.1
 
-[node name="EnemyNPC" type="CharacterBody3D" parent="."]
+[node name="EnemyNPC" parent="." instance=ExtResource("5_qgarv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4939, -14.034)
-collision_layer = 3
-collision_mask = 3
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="EnemyNPC"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_r0pc2")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="EnemyNPC"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.805602, -0.901943)
-mesh = SubResource("BoxMesh_qgarv")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EnemyNPC"]
-shape = SubResource("CapsuleShape3D_ssfg1")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="EnemyNPC"]
-path_desired_distance = 2.0
-
-[node name="RayCast3D" type="RayCast3D" parent="EnemyNPC"]
-debug_shape_custom_color = Color(1, 0, 0, 1)
-debug_shape_thickness = 4
-
-[node name="AI" type="Node" parent="EnemyNPC" node_paths=PackedStringArray("_target", "stateMachine", "rayCast3D")]
-script = ExtResource("5_qgarv")
-_target = NodePath("../../Player")
-stateMachine = NodePath("../StateMachine")
-rayCast3D = NodePath("../RayCast3D")
-
-[node name="StateMachine" type="Node" parent="EnemyNPC" node_paths=PackedStringArray("CurrentState")]
-script = ExtResource("6_gqtbx")
-CurrentState = NodePath("Roam")
-metadata/_custom_type_script = ExtResource("6_gqtbx")
-
-[node name="Roam" type="Node" parent="EnemyNPC/StateMachine" node_paths=PackedStringArray("_navAgent", "_parent")]
-script = ExtResource("7_5354r")
-_navAgent = NodePath("../../NavigationAgent3D")
-_parent = NodePath("../..")
-metadata/_custom_type_script = ExtResource("7_bu3ac")
-
-[node name="Chase" type="Node" parent="EnemyNPC/StateMachine" node_paths=PackedStringArray("_navAgent", "_target", "_parent")]
-script = ExtResource("8_5354r")
-_navAgent = NodePath("../../NavigationAgent3D")
-_target = NodePath("../../../Player")
-_parent = NodePath("../..")
-metadata/_custom_type_script = ExtResource("7_bu3ac")

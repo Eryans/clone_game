@@ -34,10 +34,7 @@ public partial class Throwable : RigidBody3D
 		}
 		foreach (var node in GetCollidingBodies())
 		{
-			if (node is CsgBox3D)
-			{
-				if (IsInstanceValid(_bompSoundPlayer)) { _bompSoundPlayer.Play(); }
-			}
+			if (IsInstanceValid(_bompSoundPlayer)) { _bompSoundPlayer.Play(); }
 		}
 	}
 

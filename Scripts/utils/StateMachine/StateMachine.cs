@@ -25,6 +25,7 @@ public partial class StateMachine : Node
     public override void _Process(double delta)
     {
         if (IsInstanceValid(CurrentState)) CurrentState.Process(delta);
+        GD.Print(CurrentState.Name);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -34,6 +35,7 @@ public partial class StateMachine : Node
 
     public void ChangeState(string newState)
     {
+        newState = newState.ToLower();
         if (_states[newState] == null) return;
         CurrentState.Exit();
         CurrentState = _states[newState];

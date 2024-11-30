@@ -11,16 +11,23 @@ public partial class EnemyAI : Node
     private RayCast3D rayCast3D;
     [Export]
     private float _distanceToSeePlayer = 15f;
+    [Export]
+    private Health _health;
     private CharacterBody3D _parent;
     public override void _Ready()
     {
         base._Ready();
         _parent = GetParent<CharacterBody3D>();
+        _target = GetTree().CurrentScene.GetNode<CharacterBody3D>("Player");
+        _health.EntityDie += OnDeath;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        TargetDetection(delta);
+        if (_health.IsAlive())
+        {
+            TargetDetection(delta);
+        }
     }
     private void TargetDetection(double delta)
     {
@@ -40,5 +47,10 @@ public partial class EnemyAI : Node
                 }
             }
         }
+    }
+
+    private void OnDeath()
+    {
+        stateMachine.ChangeState("dead");
     }
 }
