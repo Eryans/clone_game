@@ -92,7 +92,7 @@ public partial class Grabber : RayCast3D
 		if (IsColliding())
 		{
 			var collision = GetCollider();
-			if (collision is CharacterBody3D cb)
+			if (collision is CharacterBody3D cb && cb.IsInGroup("grabbable"))
 			{
 				if (Input.IsActionJustPressed("action") && !IsInstanceValid(currentHoldedObject))
 				{
