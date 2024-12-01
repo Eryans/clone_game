@@ -18,6 +18,8 @@ public partial class Grabber : RayCast3D
 	private PackedScene _throwableScene;
 
 	private Path3D yeetPreviewerPath;
+
+	public bool IsHoldingObject { get => IsInstanceValid(currentHoldedObject); }
 	public override void _Ready()
 	{
 		parent = GetParent<CharacterBody3D>();
@@ -32,7 +34,7 @@ public partial class Grabber : RayCast3D
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
-		if (@event is InputEventMouseButton mb && IsHoldingObject())
+		if (@event is InputEventMouseButton mb && IsHoldingObject)
 		{
 			if (mb.ButtonIndex == MouseButton.WheelUp)
 			{
@@ -80,13 +82,9 @@ public partial class Grabber : RayCast3D
 		{
 			YeetPreview(GetPhysicsProcessDeltaTime());
 		}
-		yeetPreviewerPath.Visible = IsHoldingObject();
+		yeetPreviewerPath.Visible = IsHoldingObject;
 	}
 
-	public bool IsHoldingObject()
-	{
-		return IsInstanceValid(currentHoldedObject);
-	}
 	private void CheckForCollision()
 	{
 		if (IsColliding())

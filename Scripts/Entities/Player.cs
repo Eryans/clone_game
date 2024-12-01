@@ -12,6 +12,6 @@ public partial class Player : CharacterBody3D
 
     public override void _Process(double delta)
     {
-        _animationTree.isHolding = _grabber.IsHoldingObject();
+        _animationTree.isHolding = _grabber.IsHoldingObject;
     }
 }
