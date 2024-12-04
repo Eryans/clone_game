@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using Godot;
-using Godot.Collections;
 
 [GlobalClass]
 public partial class StateMachine : Node
@@ -10,7 +10,7 @@ public partial class StateMachine : Node
 
     public override void _Ready()
     {
-        Array<Node> childrens = GetChildren();
+        Godot.Collections.Array<Node> childrens = GetChildren();
         foreach (Node child in childrens)
         {
             if (child is State stateChild)
@@ -25,7 +25,6 @@ public partial class StateMachine : Node
     public override void _Process(double delta)
     {
         if (IsInstanceValid(CurrentState)) CurrentState.Process(delta);
-        GD.Print(CurrentState.Name);
     }
 
     public override void _PhysicsProcess(double delta)

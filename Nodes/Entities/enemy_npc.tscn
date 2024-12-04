@@ -1,6 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://imiolqrdu4bw"]
+[gd_scene load_steps=18 format=3 uid="uid://imiolqrdu4bw"]
 
 [ext_resource type="Script" uid="uid://dycsyxqfi4ewj" path="res://Scripts/Entities/EnemyAI.cs" id="1_4vsts"]
+[ext_resource type="PackedScene" uid="uid://bjktcrsmbf43w" path="res://Assets/Models/slug bulbaur rat monster.glb" id="1_pvebh"]
+[ext_resource type="Script" uid="uid://d262iqebrjva6" path="res://Scripts/Components/EnemyAnimationTree.cs" id="2_3wvuh"]
 [ext_resource type="Script" uid="uid://b1ggfn050k8lv" path="res://Scripts/utils/StateMachine/StateMachine.cs" id="2_tjuhc"]
 [ext_resource type="Script" uid="uid://dd1er0fyvb1br" path="res://Scripts/Behaviors/Roam.cs" id="3_4fe8v"]
 [ext_resource type="Script" uid="uid://sqoamm70myjd" path="res://Scripts/utils/StateMachine/State.cs" id="4_cerxo"]
@@ -9,32 +11,76 @@
 [ext_resource type="Script" uid="uid://b4ganks7axkas" path="res://Scripts/Behaviors/Dead.cs" id="6_cerxo"]
 [ext_resource type="Script" uid="uid://dhwkec4echr8a" path="res://Scripts/Components/Hitbox.cs" id="7_cerxo"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_r0pc2"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pvebh"]
+radius = 1.58372
+height = 3.16745
 
-[sub_resource type="BoxMesh" id="BoxMesh_qgarv"]
-size = Vector3(0.75, 0.25, 0.25)
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pvebh"]
+animation = &"walk -"
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ssfg1"]
-radius = 1.0
-height = 4.0
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3wvuh"]
+animation = &"idle -"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_8mkww"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fxyby"]
+graph_offset = Vector2(20.6375, 111.956)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_3wvuh")
+nodes/Animation/position = Vector2(320, 220)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_pvebh")
+"nodes/Animation 2/position" = Vector2(380, 400)
+nodes/WalkBlend/node = SubResource("AnimationNodeBlend2_8mkww")
+nodes/WalkBlend/position = Vector2(568.033, 186.602)
+nodes/output/position = Vector2(980, 200)
+node_connections = [&"WalkBlend", 0, &"Animation", &"WalkBlend", 1, &"Animation 2", &"output", 0, &"WalkBlend"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pvebh"]
-size = Vector3(2.25, 2.25, 2.25)
+size = Vector3(1.74878, 1.68408, 2.24362)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3wvuh"]
+radius = 1.0113
+height = 2.40359
 
 [node name="EnemyNPC" type="CharacterBody3D"]
 collision_layer = 3
 collision_mask = 3
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_r0pc2")
+[node name="slug bulbaur rat monster" parent="." instance=ExtResource("1_pvebh")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.805602, -0.901943)
-mesh = SubResource("BoxMesh_qgarv")
+[node name="Skeleton3D" parent="slug bulbaur rat monster/Armature" index="0"]
+bones/2/rotation = Quaternion(-0.078221, 5.53869e-12, 1.30546e-07, 0.996936)
+bones/3/rotation = Quaternion(0.0155573, -8.2853e-08, -4.65681e-08, 0.999879)
+bones/4/rotation = Quaternion(-0.124423, 4.04207e-09, 1.11089e-07, 0.992229)
+bones/5/position = Vector3(-2.6679e-07, 1.33525, -0.159857)
+bones/5/rotation = Quaternion(0.387764, 1.89231e-07, -5.49469e-07, 0.921759)
+bones/6/position = Vector3(0.383067, 1.10327, -0.457463)
+bones/6/rotation = Quaternion(0.854737, 0.135087, 0.0815691, -0.494492)
+bones/8/rotation = Quaternion(0.196662, -0.271994, -0.0130024, 0.941899)
+bones/9/rotation = Quaternion(0.0527731, -2.0634e-13, -6.29106e-08, 0.998607)
+bones/10/position = Vector3(-0.383068, 1.10327, -0.457462)
+bones/10/rotation = Quaternion(0.854737, -0.135088, -0.0815702, -0.494492)
+bones/11/rotation = Quaternion(0.290295, 3.3031e-08, -0.13908, 0.946776)
+bones/12/rotation = Quaternion(0.19582, -0.271994, 0.0223455, 0.941899)
+bones/13/position = Vector3(1.02037e-06, 1.16607, 0.611391)
+bones/13/rotation = Quaternion(0.775912, 0.0186114, -0.00109695, 0.630565)
+bones/14/rotation = Quaternion(-0.42701, 0.0568286, -0.0207876, 0.90222)
+bones/15/position = Vector3(6.78395e-07, 0.934302, 0.406482)
+bones/15/rotation = Quaternion(0.461113, -0.0637405, -0.189288, 0.86457)
+bones/16/rotation = Quaternion(0.101068, -5.14378e-09, 4.44853e-08, 0.99488)
+bones/17/position = Vector3(6.20288e-07, 0.381817, 0.371665)
+bones/17/rotation = Quaternion(0.90754, -0.2311, -0.129261, 0.325969)
+bones/18/rotation = Quaternion(-0.000721533, 3.21332e-09, 1.17636e-08, 1)
+bones/19/position = Vector3(-1.18274e-08, -0.20759, -0.0188385)
+bones/19/rotation = Quaternion(0.962958, -8.67322e-08, -1.71522e-07, -0.26965)
+bones/20/rotation = Quaternion(0.247534, -1.77937e-09, 6.59925e-08, 0.968879)
+bones/21/rotation = Quaternion(-0.324115, -1.01005e-08, -1.08402e-07, 0.946018)
+bones/22/rotation = Quaternion(0.0475174, 1.22097e-08, 7.58401e-08, 0.99887)
+bones/23/rotation = Quaternion(-0.244486, -8.90548e-09, -1.04875e-07, 0.969653)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_ssfg1")
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_pvebh")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 2.0
@@ -42,6 +88,13 @@ path_desired_distance = 2.0
 [node name="RayCast3D" type="RayCast3D" parent="."]
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 4
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../slug bulbaur rat monster")
+tree_root = SubResource("AnimationNodeBlendTree_fxyby")
+anim_player = NodePath("../slug bulbaur rat monster/AnimationPlayer")
+parameters/WalkBlend/blend_amount = 1.0
+script = ExtResource("2_3wvuh")
 
 [node name="AI" type="Node" parent="." node_paths=PackedStringArray("stateMachine", "rayCast3D", "_health")]
 script = ExtResource("1_4vsts")
@@ -78,11 +131,32 @@ _navAgent = NodePath("../../NavigationAgent3D")
 metadata/_custom_type_script = ExtResource("4_cerxo")
 
 [node name="Hitbox" type="Area3D" parent="." node_paths=PackedStringArray("_health")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.893187, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61098, -3.11595)
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("7_cerxo")
 _health = NodePath("../Health")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0137939, -0.125285, 0.312996)
 shape = SubResource("BoxShape3D_pvebh")
+
+[node name="BodyColliders" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="BodyColliders"]
+transform = Transform3D(1, -3.45617e-08, -1.69499e-08, 3.45617e-08, 0.612231, 0.790679, -1.69499e-08, -0.790679, 0.612231, 0, 1.07464, -1.39953)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyColliders/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_3wvuh")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="BodyColliders"]
+transform = Transform3D(1, -3.36296e-08, -7.16352e-08, 3.36296e-08, -0.638822, 0.769355, -7.16352e-08, -0.769355, -0.638822, 0, 1.46201, -2.6741)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyColliders/StaticBody3D2"]
+shape = SubResource("CapsuleShape3D_3wvuh")
+
+[editable path="slug bulbaur rat monster"]

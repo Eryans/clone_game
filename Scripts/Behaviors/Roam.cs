@@ -52,7 +52,11 @@ public partial class Roam : State
             Utils.LookAtTarget(_parent.GlobalPosition, _navAgent.TargetPosition),
             (float)delta)
         };
-        _parent.MoveAndSlide();
+        if (!_navAgent.IsTargetReached())
+        {
+
+            _parent.MoveAndSlide();
+        }
     }
 
     private Vector3 GetNewRoamTarget()

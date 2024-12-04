@@ -13,12 +13,9 @@ public partial class Grabber : RayCast3D
 	private float yeetDirectionChangeAmount = .25f;
 	private CharacterBody3D parent;
 	private Marker3D grabbedObjectPoint;
-
 	private Throwable currentHoldedObject;
 	private PackedScene _throwableScene;
-
 	private Path3D yeetPreviewerPath;
-
 	public bool IsHoldingObject { get => IsInstanceValid(currentHoldedObject); }
 	public override void _Ready()
 	{
