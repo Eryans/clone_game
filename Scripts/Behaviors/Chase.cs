@@ -13,6 +13,8 @@ public partial class Chase : State
     private float speed = 3.0f;
     [Export]
     private EnemyAnimationTree _animationTree;
+    [Export]
+    public float AttackDistance { get; private set; } = 4f;
 
 
     public override void Enter()
@@ -26,13 +28,19 @@ public partial class Chase : State
     }
     public override void PhysicsProcess(double delta)
     {
-        if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < 20)
+        if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < AttackDistance)
+        {
+            ChangeToState("attack");
+            return;
+        }
+        else if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < 20)
         {
             ChaseTarget(delta);
         }
         else
         {
             ChangeToState("Roam");
+            return;
         }
     }
     public override void Exit()

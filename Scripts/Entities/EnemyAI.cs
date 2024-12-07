@@ -32,7 +32,9 @@ public partial class EnemyAI : Node
     }
     private void TargetDetection(double delta)
     {
-        if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < _distanceToSeePlayer)
+
+        if ((stateMachine.CurrentState.Name == "Roam" | stateMachine.CurrentState.Name == "Idle")
+         && _parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < _distanceToSeePlayer)
         {
             Vector3 directionToTarget = _parent.GlobalPosition.DirectionTo(_target.GlobalPosition);
             rayCast3D.TargetPosition = rayCast3D.ToLocal(_target.GlobalPosition);
