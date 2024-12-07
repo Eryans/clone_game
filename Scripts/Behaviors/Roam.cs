@@ -40,11 +40,14 @@ public partial class Roam : State
     private void RoamAround(double delta)
     {
         if (NavigationServer3D.MapGetIterationId(_navAgent.GetNavigationMap()) == 0) return;
-        if (_navAgent.IsNavigationFinished()) return;
 
 
         Vector3 nextPathPosition = _navAgent.GetNextPathPosition();
         Vector3 newVelocity = _parent.GlobalPosition.DirectionTo(nextPathPosition) * _speed;
+        if (_navAgent.IsNavigationFinished())
+        {
+            newVelocity = Vector3.Zero;
+        }
         _parent.Velocity = newVelocity;
         _parent.Rotation = _parent.Rotation with
         {
@@ -52,11 +55,7 @@ public partial class Roam : State
             Utils.LookAtTarget(_parent.GlobalPosition, _navAgent.TargetPosition),
             (float)delta)
         };
-        if (!_navAgent.IsTargetReached())
-        {
-
-            _parent.MoveAndSlide();
-        }
+        _parent.MoveAndSlide();
     }
 
     private Vector3 GetNewRoamTarget()
