@@ -23,7 +23,6 @@ sky = SubResource("Sky_qgarv")
 tonemap_mode = 2
 ssao_enabled = true
 ssil_enabled = true
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_t8dge"]
@@ -111,6 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.56103, 3.60855, 4.65803)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.681007, -0.246569, 0.689517, 0.468683, 0.576715, 0.669131, -0.562641, 0.778848, -0.277184, 0, 14, 0)
 shadow_enabled = true
+shadow_opacity = 0.75
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4wuf8")

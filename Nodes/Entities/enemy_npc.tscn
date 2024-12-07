@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://imiolqrdu4bw"]
+[gd_scene load_steps=19 format=3 uid="uid://imiolqrdu4bw"]
 
 [ext_resource type="Script" uid="uid://dycsyxqfi4ewj" path="res://Scripts/Entities/EnemyAI.cs" id="1_4vsts"]
 [ext_resource type="PackedScene" uid="uid://bjktcrsmbf43w" path="res://Assets/Models/slug bulbaur rat monster.glb" id="1_pvebh"]
@@ -11,9 +11,20 @@
 [ext_resource type="Script" uid="uid://b4ganks7axkas" path="res://Scripts/Behaviors/Dead.cs" id="6_cerxo"]
 [ext_resource type="Script" uid="uid://dhwkec4echr8a" path="res://Scripts/Components/Hitbox.cs" id="7_cerxo"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pvebh"]
+size = Vector3(1.74878, 1.64954, 1.34801)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8mkww"]
+radius = 0.945669
+height = 2.46096
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3wvuh"]
+radius = 0.842223
+height = 3.5081
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pvebh"]
-radius = 1.58372
-height = 3.16745
+radius = 1.07875
+height = 2.68232
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pvebh"]
 animation = &"walk -"
@@ -24,7 +35,7 @@ animation = &"idle -"
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_8mkww"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fxyby"]
-graph_offset = Vector2(20.6375, 111.956)
+graph_offset = Vector2(-85.629, 109.295)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_3wvuh")
 nodes/Animation/position = Vector2(320, 220)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_pvebh")
@@ -34,13 +45,6 @@ nodes/WalkBlend/position = Vector2(568.033, 186.602)
 nodes/output/position = Vector2(980, 200)
 node_connections = [&"WalkBlend", 0, &"Animation", &"WalkBlend", 1, &"Animation 2", &"output", 0, &"WalkBlend"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_pvebh"]
-size = Vector3(1.74878, 1.68408, 2.24362)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3wvuh"]
-radius = 1.0113
-height = 2.40359
-
 [node name="EnemyNPC" type="CharacterBody3D"]
 collision_layer = 3
 collision_mask = 3
@@ -49,34 +53,76 @@ collision_mask = 3
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="Skeleton3D" parent="slug bulbaur rat monster/Armature" index="0"]
-bones/2/rotation = Quaternion(-0.078221, 5.53869e-12, 1.30546e-07, 0.996936)
-bones/3/rotation = Quaternion(0.0155573, -8.2853e-08, -4.65681e-08, 0.999879)
-bones/4/rotation = Quaternion(-0.124423, 4.04207e-09, 1.11089e-07, 0.992229)
+bones/2/rotation = Quaternion(-0.102399, -3.16352e-09, 1.30507e-07, 0.994743)
+bones/3/rotation = Quaternion(-0.217903, -2.13163e-14, 3.63665e-07, 0.97597)
+bones/4/rotation = Quaternion(0.220078, -1.03228e-08, -2.54916e-07, 0.975482)
 bones/5/position = Vector3(-2.6679e-07, 1.33525, -0.159857)
-bones/5/rotation = Quaternion(0.387764, 1.89231e-07, -5.49469e-07, 0.921759)
+bones/5/rotation = Quaternion(0.426166, 2.15684e-07, -6.09635e-07, 0.904645)
 bones/6/position = Vector3(0.383067, 1.10327, -0.457463)
 bones/6/rotation = Quaternion(0.854737, 0.135087, 0.0815691, -0.494492)
-bones/8/rotation = Quaternion(0.196662, -0.271994, -0.0130024, 0.941899)
-bones/9/rotation = Quaternion(0.0527731, -2.0634e-13, -6.29106e-08, 0.998607)
+bones/8/rotation = Quaternion(0.0539, 0.186786, -0.161257, 0.967575)
+bones/9/rotation = Quaternion(0.0522555, -1.2982e-09, -1.70397e-08, 0.998634)
 bones/10/position = Vector3(-0.383068, 1.10327, -0.457462)
-bones/10/rotation = Quaternion(0.854737, -0.135088, -0.0815702, -0.494492)
-bones/11/rotation = Quaternion(0.290295, 3.3031e-08, -0.13908, 0.946776)
-bones/12/rotation = Quaternion(0.19582, -0.271994, 0.0223455, 0.941899)
+bones/10/rotation = Quaternion(0.854737, -0.135088, -0.0815701, -0.494492)
+bones/11/rotation = Quaternion(0.290295, 3.26233e-08, -0.13908, 0.946776)
+bones/12/rotation = Quaternion(0.178018, 8.20728e-09, 0.0160327, 0.983897)
 bones/13/position = Vector3(1.02037e-06, 1.16607, 0.611391)
-bones/13/rotation = Quaternion(0.775912, 0.0186114, -0.00109695, 0.630565)
-bones/14/rotation = Quaternion(-0.42701, 0.0568286, -0.0207876, 0.90222)
+bones/13/rotation = Quaternion(0.751127, 4.72181e-07, -7.16331e-07, 0.660157)
+bones/14/rotation = Quaternion(-0.360475, 0.0207201, -0.0184799, 0.932356)
 bones/15/position = Vector3(6.78395e-07, 0.934302, 0.406482)
-bones/15/rotation = Quaternion(0.461113, -0.0637405, -0.189288, 0.86457)
-bones/16/rotation = Quaternion(0.101068, -5.14378e-09, 4.44853e-08, 0.99488)
+bones/15/rotation = Quaternion(0.470595, 9.46663e-07, -2.80499e-07, 0.882349)
+bones/16/rotation = Quaternion(0.101068, 1.49239e-14, 4.81932e-08, 0.99488)
 bones/17/position = Vector3(6.20288e-07, 0.381817, 0.371665)
-bones/17/rotation = Quaternion(0.90754, -0.2311, -0.129261, 0.325969)
-bones/18/rotation = Quaternion(-0.000721533, 3.21332e-09, 1.17636e-08, 1)
+bones/17/rotation = Quaternion(0.941134, 2.8208e-07, -7.85349e-07, 0.338034)
+bones/18/rotation = Quaternion(-0.000721559, -3.82044e-17, 8.39183e-17, 1)
 bones/19/position = Vector3(-1.18274e-08, -0.20759, -0.0188385)
-bones/19/rotation = Quaternion(0.962958, -8.67322e-08, -1.71522e-07, -0.26965)
-bones/20/rotation = Quaternion(0.247534, -1.77937e-09, 6.59925e-08, 0.968879)
-bones/21/rotation = Quaternion(-0.324115, -1.01005e-08, -1.08402e-07, 0.946018)
-bones/22/rotation = Quaternion(0.0475174, 1.22097e-08, 7.58401e-08, 0.99887)
-bones/23/rotation = Quaternion(-0.244486, -8.90548e-09, -1.04875e-07, 0.969653)
+bones/19/rotation = Quaternion(0.922916, -1.66754e-07, -1.79698e-07, -0.385001)
+bones/20/rotation = Quaternion(0.466981, -0.00413451, 0.00704635, 0.88423)
+bones/21/rotation = Quaternion(-0.308645, -3.0059e-11, -7.44337e-08, 0.951177)
+bones/22/rotation = Quaternion(-0.367285, 0.00910587, -0.00636508, 0.930042)
+bones/23/rotation = Quaternion(-0.187768, 3.44736e-10, -4.4832e-08, 0.982213)
+
+[node name="BoneAttachment3D3" type="BoneAttachment3D" parent="slug bulbaur rat monster/Armature/Skeleton3D" index="0"]
+transform = Transform3D(1, -1.43675e-07, -1.05388e-06, -9.41599e-07, -0.580393, -0.814336, -4.94664e-07, 0.814337, -0.580393, -1.47886e-07, 1.86297, 2.75363)
+bone_name = "head tip"
+bone_idx = 9
+
+[node name="Hitbox" type="Area3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D3" node_paths=PackedStringArray("_health")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("7_cerxo")
+_health = NodePath("../../../../../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D3/Hitbox"]
+transform = Transform3D(1, 6.82121e-13, -1.7053e-12, -1.13687e-13, 0.999998, -2.98023e-07, -7.53175e-13, 2.98023e-07, 0.999998, 1.81899e-12, 0.12152, 0.187679)
+shape = SubResource("BoxShape3D_pvebh")
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="slug bulbaur rat monster/Armature/Skeleton3D" index="1"]
+transform = Transform3D(1, -6.70677e-08, -1.06231e-06, -9.57711e-07, -0.492233, -0.870463, -4.64522e-07, 0.870464, -0.492233, -9.41925e-08, 2.25704, 2.05676)
+bone_name = "head up"
+bone_idx = 5
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D"]
+transform = Transform3D(-1, 2.42349e-08, -1.79056e-06, -2.57563e-07, 0.987565, 0.157212, 1.7721e-06, 0.157212, -0.987565, -4.18378e-07, 0.49973, 0.32317)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D/StaticBody3D2"]
+shape = SubResource("CapsuleShape3D_8mkww")
+
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="slug bulbaur rat monster/Armature/Skeleton3D" index="2"]
+transform = Transform3D(1, -1.4278e-07, -1.638e-06, -1.47852e-06, 0.357741, -0.933821, 7.1931e-07, 0.933821, 0.357741, 1.014e-07, 1.63008, 0.867057)
+bone_name = "Bone.004"
+bone_idx = 4
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D2"]
+transform = Transform3D(-1, -7.81424e-07, -1.64927e-06, -4.99523e-07, 0.986382, -0.164473, 1.75533e-06, -0.164472, -0.986382, -1.34257e-07, 0.421326, 0.307227)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D2/StaticBody3D2"]
+shape = SubResource("CapsuleShape3D_3wvuh")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
@@ -129,34 +175,5 @@ script = ExtResource("6_cerxo")
 _parent = NodePath("../..")
 _navAgent = NodePath("../../NavigationAgent3D")
 metadata/_custom_type_script = ExtResource("4_cerxo")
-
-[node name="Hitbox" type="Area3D" parent="." node_paths=PackedStringArray("_health")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61098, -3.11595)
-collision_layer = 2
-collision_mask = 2
-script = ExtResource("7_cerxo")
-_health = NodePath("../Health")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0137939, -0.125285, 0.312996)
-shape = SubResource("BoxShape3D_pvebh")
-
-[node name="BodyColliders" type="Node3D" parent="."]
-
-[node name="StaticBody3D" type="StaticBody3D" parent="BodyColliders"]
-transform = Transform3D(1, -3.45617e-08, -1.69499e-08, 3.45617e-08, 0.612231, 0.790679, -1.69499e-08, -0.790679, 0.612231, 0, 1.07464, -1.39953)
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyColliders/StaticBody3D"]
-shape = SubResource("CapsuleShape3D_3wvuh")
-
-[node name="StaticBody3D2" type="StaticBody3D" parent="BodyColliders"]
-transform = Transform3D(1, -3.36296e-08, -7.16352e-08, 3.36296e-08, -0.638822, 0.769355, -7.16352e-08, -0.769355, -0.638822, 0, 1.46201, -2.6741)
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyColliders/StaticBody3D2"]
-shape = SubResource("CapsuleShape3D_3wvuh")
 
 [editable path="slug bulbaur rat monster"]

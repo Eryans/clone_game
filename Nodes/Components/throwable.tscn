@@ -5,8 +5,8 @@
 [ext_resource type="AudioStream" uid="uid://dvseed7ebmdrn" path="res://Assets/Sounds/bom.mp3" id="3_1qnuf"]
 
 [node name="Throwable" type="RigidBody3D"]
-collision_layer = 2
-collision_mask = 2
+collision_layer = 6
+collision_mask = 6
 script = ExtResource("1_cgnoy")
 
 [node name="YeetedSoundPlayer" type="AudioStreamPlayer" parent="."]
