@@ -11,7 +11,19 @@ public partial class Chase : State
     private CharacterBody3D _parent;
     [Export]
     private float speed = 3.0f;
+    [Export]
+    private EnemyAnimationTree _animationTree;
 
+
+    public override void Enter()
+    {
+        if (!IsInstanceValid(_target))
+        {
+            _target = GetTree().CurrentScene.GetNode<Player>("Player");
+        }
+        _animationTree.SetCurrentAnimation(EnemyAnimationTree.AnimationState.WALK);
+
+    }
     public override void PhysicsProcess(double delta)
     {
         if (_parent.GlobalPosition.DistanceTo(_target.GlobalPosition) < 20)

@@ -12,26 +12,21 @@ public partial class Roam : State
     private float _speed = 3.0f;
     [Export]
     private float _maxNewTargetDistance = 15f;
-    [Export(PropertyHint.Range, "1,10")]
-    private float _maxSecondsBeforeTargetChange = 10f;
-    private Timer _newTargetTimer = new();
+    [Export]
+    private EnemyAnimationTree _animationTree;
     private RandomNumberGenerator rng = new();
     private Vector3 _startPosition;
     public override void _Ready()
     {
-        AddChild(_newTargetTimer);
-        _newTargetTimer.Timeout += OnNewTargetTimerTimeout;
         _startPosition = _parent.GlobalPosition;
     }
     public override void Enter()
     {
-        _navAgent.TargetPosition = GetNewRoamTarget();
-        StartTimer();
+        SetNewTarget(GetNewRoamTarget());
+        _animationTree.SetCurrentAnimation(EnemyAnimationTree.AnimationState.WALK);
+
     }
-    public override void Exit()
-    {
-        _newTargetTimer.Stop();
-    }
+
     public override void PhysicsProcess(double delta)
     {
         RoamAround(delta);
@@ -46,7 +41,9 @@ public partial class Roam : State
         Vector3 newVelocity = _parent.GlobalPosition.DirectionTo(nextPathPosition) * _speed;
         if (_navAgent.IsNavigationFinished())
         {
-            newVelocity = Vector3.Zero;
+            _parent.Velocity = Vector3.Zero;
+            ChangeToState("idle");
+            return;
         }
         _parent.Velocity = newVelocity;
         _parent.Rotation = _parent.Rotation with
@@ -63,21 +60,12 @@ public partial class Roam : State
         Vector3 newTarget = new(rng.RandfRange(-_maxNewTargetDistance, _maxNewTargetDistance), 0, rng.RandfRange(-_maxNewTargetDistance, _maxNewTargetDistance));
         return _startPosition + newTarget;
     }
-    private void OnNewTargetTimerTimeout()
-    {
-        SetNewTarget(GetNewRoamTarget());
-    }
 
-    private void StartTimer()
-    {
-        _newTargetTimer.Start(rng.RandfRange(5, _maxSecondsBeforeTargetChange));
-    }
 
 
     private void SetNewTarget(Vector3 newTarget)
     {
         var rid = _navAgent.GetNavigationMap();
         _navAgent.TargetPosition = NavigationServer3D.MapGetClosestPoint(rid, newTarget);
-        StartTimer();
     }
 }

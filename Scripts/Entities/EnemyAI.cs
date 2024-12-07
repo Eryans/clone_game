@@ -20,6 +20,7 @@ public partial class EnemyAI : Node
         _parent = GetParent<CharacterBody3D>();
         _target = GetTree().CurrentScene.GetNode<CharacterBody3D>("Player");
         _health.EntityDie += OnDeath;
+        _health.EntityHit += OnHit;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -48,7 +49,10 @@ public partial class EnemyAI : Node
             }
         }
     }
-
+    private void OnHit()
+    {
+        stateMachine.ChangeState("hit");
+    }
     private void OnDeath()
     {
         stateMachine.ChangeState("dead");

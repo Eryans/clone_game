@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 [GlobalClass]
-public partial class Hitbox : Area3D
+public partial class Hurtbox : Area3D
 {
     [Export]
     private Health _health;

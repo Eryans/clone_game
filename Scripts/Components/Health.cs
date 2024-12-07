@@ -10,6 +10,7 @@ public partial class Health : Node
     private int _currentHealth;
 
     public event Action EntityDie;
+    public event Action EntityHit;
     public override void _Ready()
     {
         _currentHealth = _maxHealth;
@@ -18,13 +19,11 @@ public partial class Health : Node
     {
         return _currentHealth > 0;
     }
+
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        if (_currentHealth <= 0)
-        {
-            EntityDie?.Invoke();
-        }
+        if (_currentHealth <= 0) { EntityDie?.Invoke(); } else { EntityHit?.Invoke(); }
     }
 
 }
