@@ -21,7 +21,7 @@ public partial class Chase : State
     {
         if (!IsInstanceValid(_target))
         {
-            _target = GetTree().CurrentScene.GetNode<Player>("Player");
+            _target = GetTree().CurrentScene.GetNode<GreenGuy>("Player");
         }
         _animationTree.SetCurrentAnimation(EnemyAnimationTree.AnimationState.WALK);
 

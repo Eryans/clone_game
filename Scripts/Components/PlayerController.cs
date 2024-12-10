@@ -11,21 +11,26 @@ public partial class PlayerController : Node
 	public AudioStreamPlayer WalkSoundStreamPlayer;
 	[Export]
 	private float _rotationSpeed = 3f;
-	private CharacterBody3D _parent;
+	[Export]
+	public CharacterBody3D ControlledEntity { get; private set; }
+	private Grabber _grabber;
+
+	public static event Action<bool> RightClick;
+	public static event Action LeftClick;
 	public override void _Ready()
 	{
-		_parent = GetParent<CharacterBody3D>();
 		RayCastCamera3d.MouseMoved += OnWorld3DMousePositionMovement;
+		_grabber = ControlledEntity.GetNode<Grabber>("Grabber");
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector3 velocity = _parent.Velocity;
-		if (!_parent.IsOnFloor())
+		Vector3 velocity = ControlledEntity.Velocity;
+		if (!ControlledEntity.IsOnFloor())
 		{
-			velocity += _parent.GetGravity() * (float)delta;
+			velocity += ControlledEntity.GetGravity() * (float)delta;
 		}
 
-		if (Input.IsActionJustPressed("jump") && _parent.IsOnFloor())
+		if (Input.IsActionJustPressed("jump") && ControlledEntity.IsOnFloor())
 		{
 			velocity.Y = JumpVelocity;
 		}
@@ -41,16 +46,34 @@ public partial class PlayerController : Node
 		else
 		{
 			if (IsInstanceValid(WalkSoundStreamPlayer)) WalkSoundStreamPlayer.Stop();
-			velocity.X = Mathf.MoveToward(_parent.Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(_parent.Velocity.Z, 0, Speed);
+			velocity.X = Mathf.MoveToward(ControlledEntity.Velocity.X, 0, Speed);
+			velocity.Z = Mathf.MoveToward(ControlledEntity.Velocity.Z, 0, Speed);
 		}
 
-		_parent.Velocity = velocity;
-		_parent.MoveAndSlide();
+		ControlledEntity.Velocity = velocity;
+		ControlledEntity.MoveAndSlide();
+
+		HandleMouseInputs();
+	}
+
+	private void HandleMouseInputs()
+	{
+		if (Input.IsActionPressed("mouse_right"))
+		{
+			_grabber.Armed = true;
+		}
+		if (Input.IsActionJustReleased("mouse_right"))
+		{
+			_grabber.Armed = false;
+		}
+		if (Input.IsActionJustPressed("mouse_left"))
+		{
+			_grabber.YEET();
+		}
 	}
 
 	private void OnWorld3DMousePositionMovement(Vector3 mousePos)
 	{
-		_parent.Rotation = _parent.Rotation with { Y = Mathf.LerpAngle(_parent.Rotation.Y, Utils.LookAtTarget(_parent.GlobalPosition, mousePos), (float)GetPhysicsProcessDeltaTime() * _rotationSpeed) };
+		ControlledEntity.Rotation = ControlledEntity.Rotation with { Y = Mathf.LerpAngle(ControlledEntity.Rotation.Y, Utils.LookAtTarget(ControlledEntity.GlobalPosition, mousePos), (float)GetPhysicsProcessDeltaTime() * _rotationSpeed) };
 	}
 }

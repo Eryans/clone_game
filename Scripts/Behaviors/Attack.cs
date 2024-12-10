@@ -10,7 +10,7 @@ public partial class Attack : State
     private CharacterBody3D _target;
     public override void Enter()
     {
-        _target = GetTree().CurrentScene.GetNode<Player>("Player");
+        _target = GetTree().CurrentScene.GetNode<GreenGuy>("Player");
         _parent.Velocity = Vector3.Zero;
         _animationTree.Set("parameters/AttackOneShot/request", (int)AnimationNodeOneShot.OneShotRequest.Fire);
         // ChangeToState("chase");

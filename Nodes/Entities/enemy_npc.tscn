@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://c370yobexrkc1" path="res://Scripts/Behaviors/Attack.cs" id="13_ml8q1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pvebh"]
-size = Vector3(1.74878, 1.64954, 1.34801)
+size = Vector3(2, 2.5, 1.6)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8mkww"]
 radius = 0.945669
@@ -84,25 +84,25 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 
 [node name="Skeleton3D" parent="slug bulbaur rat monster/Armature" index="0"]
 bones/0/position = Vector3(-4.19117e-14, 0.8, -1.4)
-bones/2/rotation = Quaternion(-0.0809807, -3.55888e-10, 1.30545e-07, 0.996716)
+bones/2/rotation = Quaternion(-0.0801436, -2.4626e-10, 1.30545e-07, 0.996783)
 bones/3/rotation = Quaternion(-0.217903, 2.30926e-14, 3.63665e-07, 0.97597)
-bones/4/rotation = Quaternion(0.160954, -1.17231e-09, -2.55859e-07, 0.986962)
+bones/4/rotation = Quaternion(0.158479, -7.9114e-10, -2.55878e-07, 0.987362)
 bones/5/position = Vector3(-2.6679e-07, 1.33525, -0.159857)
 bones/5/rotation = Quaternion(0.426166, 2.15684e-07, -6.09635e-07, 0.904645)
 bones/6/position = Vector3(0.383067, 1.10327, -0.457463)
 bones/6/rotation = Quaternion(0.854737, 0.135087, 0.0815692, -0.494492)
 bones/7/rotation = Quaternion(0.290295, 2.65782e-08, 0.13908, 0.946776)
-bones/8/rotation = Quaternion(0.0683558, 0.0212715, -0.0239677, 0.997146)
+bones/8/rotation = Quaternion(0.0688887, 0.0143436, -0.0182147, 0.997355)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/rotation = Quaternion(0.0365152, 1.02352e-09, -6.29023e-08, 0.999333)
+bones/9/rotation = Quaternion(0.0413245, 7.20753e-10, -6.29064e-08, 0.999146)
 bones/10/position = Vector3(-0.383068, 1.10327, -0.457462)
 bones/10/rotation = Quaternion(0.854737, -0.135088, -0.0815701, -0.494492)
 bones/11/rotation = Quaternion(0.290295, 3.28272e-08, -0.13908, 0.946776)
-bones/12/rotation = Quaternion(0.0822906, 6.06815e-09, 0.00741131, 0.996581)
+bones/12/rotation = Quaternion(0.0782861, 2.85218e-09, 0.00705066, 0.996906)
 bones/12/scale = Vector3(1, 1, 1)
 bones/13/position = Vector3(1.02037e-06, 1.16607, 0.611391)
 bones/13/rotation = Quaternion(0.751127, 4.72181e-07, -7.16331e-07, 0.660157)
-bones/14/rotation = Quaternion(-0.51118, 0.00235684, -0.00210191, 0.859468)
+bones/14/rotation = Quaternion(-0.517145, 0.00158978, -0.00141778, 0.855895)
 bones/15/position = Vector3(6.78395e-07, 0.934302, 0.406482)
 bones/15/rotation = Quaternion(0.470595, 9.46663e-07, -2.80499e-07, 0.882349)
 bones/16/rotation = Quaternion(0.101068, 1.49239e-14, 4.81932e-08, 0.99488)
@@ -110,28 +110,29 @@ bones/17/position = Vector3(6.20288e-07, 0.381817, 0.371665)
 bones/17/rotation = Quaternion(0.941134, 2.8208e-07, -7.85349e-07, 0.338034)
 bones/18/rotation = Quaternion(-0.000721559, -3.82044e-17, 8.39183e-17, 1)
 bones/19/rotation = Quaternion(0.922916, -1.66754e-07, -1.79698e-07, -0.385001)
-bones/20/rotation = Quaternion(0.272879, -0.000470739, 0.000802321, 0.962048)
+bones/20/rotation = Quaternion(0.264521, -0.000317445, 0.000541068, 0.96438)
 bones/21/rotation = Quaternion(-0.308645, 8.44816e-16, -7.35867e-08, 0.951177)
-bones/22/rotation = Quaternion(-0.08852, 0.00103929, -0.000726482, 0.996074)
+bones/22/rotation = Quaternion(-0.0767132, 0.000700356, -0.000489566, 0.997053)
 bones/23/rotation = Quaternion(-0.187768, 2.72245e-15, -4.47675e-08, 0.982213)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="slug bulbaur rat monster/Armature/Skeleton3D" index="0"]
-transform = Transform3D(1, 3.16623e-08, -1.17642e-06, -1.01111e-06, -0.48839, -0.872626, -6.02181e-07, 0.872626, -0.488389, -1.72998e-08, 1.96168, 2.76037)
+transform = Transform3D(1, 2.27255e-08, -1.18174e-06, -1.01634e-06, -0.49387, -0.869536, -6.03385e-07, 0.869536, -0.49387, -1.10582e-08, 1.96605, 2.76024)
 bone_name = "head tip"
 bone_idx = 9
 
 [node name="Hurtbox" type="Area3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D3" node_paths=PackedStringArray("_health")]
+transform = Transform3D(1, 5.72072e-08, -7.73727e-09, -5.73897e-08, 0.999654, -0.0262893, 6.23081e-09, 0.0262895, 0.999654, 2.90123e-07, -0.0229435, 0.21398)
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("7_cerxo")
 _health = NodePath("../../../../../Health")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="slug bulbaur rat monster/Armature/Skeleton3D/BoneAttachment3D3/Hurtbox"]
-transform = Transform3D(1, 6.82121e-13, -1.7053e-12, -1.13687e-13, 0.999998, -2.98023e-07, -7.53175e-13, 2.98023e-07, 0.999998, 1.81899e-12, 0.12152, 0.187679)
+transform = Transform3D(1, 8.52651e-13, -1.44951e-12, -7.38964e-13, 1, -8.64267e-07, -5.68434e-13, 8.64267e-07, 1, 1.06943e-08, -0.357708, 0.100517)
 shape = SubResource("BoxShape3D_pvebh")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="slug bulbaur rat monster/Armature/Skeleton3D" index="1"]
-transform = Transform3D(1, -8.21092e-09, -1.17761e-06, -1.07032e-06, -0.423401, -0.905942, -4.91164e-07, 0.905942, -0.423401, -1.07258e-08, 2.30065, 2.03509)
+transform = Transform3D(1, -5.41183e-09, -1.18246e-06, -1.07518e-06, -0.420378, -0.907349, -4.92172e-07, 0.907349, -0.420378, -6.72503e-09, 2.3026, 2.03384)
 bone_name = "head up"
 bone_idx = 5
 
@@ -144,7 +145,7 @@ collision_mask = 4
 shape = SubResource("CapsuleShape3D_8mkww")
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="slug bulbaur rat monster/Armature/Skeleton3D" index="2"]
-transform = Transform3D(1, -1.63938e-08, -1.66604e-06, -1.49797e-06, 0.428927, -0.903339, 7.29418e-07, 0.903339, 0.428927, 1.16261e-08, 1.58352, 0.897467)
+transform = Transform3D(1, -1.08693e-08, -1.66697e-06, -1.49875e-06, 0.431937, -0.901904, 7.29829e-07, 0.901904, 0.431937, 8.10129e-09, 1.58168, 0.898614)
 bone_name = "Bone.004"
 bone_idx = 4
 

@@ -42,7 +42,7 @@ public partial class EnemyAI : Node
             {
                 var collider = rayCast3D.GetCollider();
 
-                if (directionToTarget.Dot(-_parent.Basis.Z) > Mathf.Pi / 4 && collider is Player)
+                if (directionToTarget.Dot(-_parent.Basis.Z) > Mathf.Pi / 4 && collider is GreenGuy)
                 {
                     stateMachine.ChangeState("chase");
                     Chase currentState = (Chase)stateMachine.CurrentState;
