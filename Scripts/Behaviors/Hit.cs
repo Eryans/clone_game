@@ -12,6 +12,13 @@ public partial class Hit : State
     {
         _parent.Velocity = Vector3.Zero;
         _animationTree.Set("parameters/HitOneShot/request", (int)AnimationNodeOneShot.OneShotRequest.Fire);
-        ChangeToState("chase");
+    }
+
+    public override void Process(double delta)
+    {
+        if (!(bool)_animationTree.Get("parameters/HitOneShot/active"))
+        {
+            ChangeToState("chase");
+        }
     }
 }
