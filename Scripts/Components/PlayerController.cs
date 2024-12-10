@@ -13,14 +13,14 @@ public partial class PlayerController : Node
 	private float _rotationSpeed = 3f;
 	[Export]
 	public CharacterBody3D ControlledEntity { get; private set; }
-	private Grabber _grabber;
+	[Export]
+	public Grabber Grabber { get; private set; }
 
 	public static event Action<bool> RightClick;
 	public static event Action LeftClick;
 	public override void _Ready()
 	{
 		RayCastCamera3d.MouseMoved += OnWorld3DMousePositionMovement;
-		_grabber = ControlledEntity.GetNode<Grabber>("Grabber");
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -60,15 +60,16 @@ public partial class PlayerController : Node
 	{
 		if (Input.IsActionPressed("mouse_right"))
 		{
-			_grabber.Armed = true;
+			Grabber.Armed = true;
+			Grabber.MakeClone();
 		}
 		if (Input.IsActionJustReleased("mouse_right"))
 		{
-			_grabber.Armed = false;
+			Grabber.Armed = false;
 		}
 		if (Input.IsActionJustPressed("mouse_left"))
 		{
-			_grabber.YEET();
+			Grabber.YEET();
 		}
 	}
 

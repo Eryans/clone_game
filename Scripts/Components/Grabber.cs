@@ -11,17 +11,19 @@ public partial class Grabber : RayCast3D
 	private int yeetPreviewStep = 20;
 	[Export]
 	private float yeetDirectionChangeAmount = .25f;
-	private CharacterBody3D parent;
+	[Export]
+	private CharacterBody3D Target;
 	private Marker3D grabbedObjectPoint;
 	private Throwable currentHoldedObject;
+	private PackedScene _greenGuy;
 	private PackedScene _throwableScene;
 	private Path3D yeetPreviewerPath;
 	public bool Armed;
 	public override void _Ready()
 	{
-		parent = GetParent<CharacterBody3D>();
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
 		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
+		_greenGuy = GD.Load<PackedScene>("res://Nodes/Entities/green_guy.tscn");
 		yeetPreviewerPath = GetNode<Path3D>("Path3D");
 		for (int i = 0; i < yeetPreviewStep; i++)
 		{
@@ -66,9 +68,14 @@ public partial class Grabber : RayCast3D
 	}
 	public override void _PhysicsProcess(double delta)
 	{
+		GlobalTransform = Target.GlobalTransform;
 		Visible = Armed;
 		CheckForCollision();
 		YeetPreview(delta);
+		if (IsInstanceValid(currentHoldedObject))
+		{
+			currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
+		}
 	}
 
 	public void YEET()
@@ -98,12 +105,22 @@ public partial class Grabber : RayCast3D
 
 		}
 	}
+
+	public void MakeClone()
+	{
+		if (!IsInstanceValid(currentHoldedObject))
+		{
+			Node clone = _greenGuy.Instantiate();
+			SetCurrentHoldedObject((Node3D)clone);
+		}
+
+	}
 	private void ThrowCurrentHoldedObject()
 	{
 		if (IsInstanceValid(currentHoldedObject))
 		{
 			if (IsInstanceValid(YeetSound)) YeetSound.Play();
-			currentHoldedObject.Yeet(parent.Transform.Basis * yeetDirection);
+			currentHoldedObject.Yeet(Target.Transform.Basis * yeetDirection);
 			currentHoldedObject = null;
 		}
 	}
@@ -111,7 +128,7 @@ public partial class Grabber : RayCast3D
 	private void YeetPreview(double delta)
 	{
 		Vector3 startPosition = grabbedObjectPoint.Transform.Origin;
-		Vector3 gravity = parent.GetGravity();
+		Vector3 gravity = Target.GetGravity();
 
 		float accumulatedTime = 0.0f;
 
@@ -136,7 +153,6 @@ public partial class Grabber : RayCast3D
 		currentHoldedObject.SetCollisionLayerValue(2, true);
 		currentHoldedObject.Setup(entity);
 		GetTree().CurrentScene.AddChild(currentHoldedObject);
-		currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
 	}
 
 }
