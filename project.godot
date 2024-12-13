@@ -23,6 +23,10 @@ window/size/always_on_top=true
 
 project/assembly_name="self-replicate"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/SimpleTODO/plugin.cfg")
+
 [global_group]
 
 grabbable="node that can be grabbed by the grabber node"

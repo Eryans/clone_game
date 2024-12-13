@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class PlayerController : Node
 {
@@ -18,6 +19,7 @@ public partial class PlayerController : Node
 
 	public static event Action<bool> RightClick;
 	public static event Action LeftClick;
+	public static event Action<Node3D> TargetChanged;
 	public override void _Ready()
 	{
 		RayCastCamera3d.MouseMoved += OnWorld3DMousePositionMovement;
@@ -28,11 +30,6 @@ public partial class PlayerController : Node
 		if (!ControlledEntity.IsOnFloor())
 		{
 			velocity += ControlledEntity.GetGravity() * (float)delta;
-		}
-
-		if (Input.IsActionJustPressed("jump") && ControlledEntity.IsOnFloor())
-		{
-			velocity.Y = JumpVelocity;
 		}
 
 		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
@@ -54,22 +51,50 @@ public partial class PlayerController : Node
 		ControlledEntity.MoveAndSlide();
 
 		HandleMouseInputs();
+		if (Input.IsActionJustPressed("ui_accept"))
+		{
+			ChangeControlledEntity();
+		}
+	}
+
+	private void ChangeControlledEntity()
+	{
+		var greenguyz = GetTree().GetNodesInGroup("greenguyz");
+		if (greenguyz.Count > 1)
+		{
+			for (int i = 0; i < greenguyz.Count; i++)
+			{
+				if (greenguyz[i].GetInstanceId() == ControlledEntity.GetInstanceId())
+				{
+					ControlledEntity = (CharacterBody3D)greenguyz[i + 1 >= greenguyz.Count ? 0 : i + 1];
+					TargetChanged?.Invoke(ControlledEntity);
+					break;
+				}
+			}
+		}
 	}
 
 	private void HandleMouseInputs()
 	{
 		if (Input.IsActionPressed("mouse_right"))
 		{
-			Grabber.Armed = true;
-			Grabber.MakeClone();
+			if (CloneManager.AvailableClone > 0)
+			{
+				Grabber.MakeClone();
+				Grabber.ReadyToFire();
+			}
+			else
+			{
+				Grabber.Release();
+			}
 		}
 		if (Input.IsActionJustReleased("mouse_right"))
 		{
-			Grabber.Armed = false;
+			Grabber.Release();
 		}
 		if (Input.IsActionJustPressed("mouse_left"))
 		{
-			Grabber.YEET();
+			if (CloneManager.AvailableClone > 0) Grabber.YEET();
 		}
 	}
 

@@ -16,7 +16,7 @@ public partial class PlayerAnimationTree : AnimationTree
 
     public override void _Ready()
     {
-        parent = GetParent<CharacterBody3D>();
+        parent = GetOwner<CharacterBody3D>();
     }
     public override void _Process(double delta)
     {

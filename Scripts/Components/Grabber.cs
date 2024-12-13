@@ -21,10 +21,12 @@ public partial class Grabber : RayCast3D
 	public bool Armed;
 	public override void _Ready()
 	{
+		Visible = false;
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
 		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
 		_greenGuy = GD.Load<PackedScene>("res://Nodes/Entities/green_guy.tscn");
 		yeetPreviewerPath = GetNode<Path3D>("Path3D");
+		PlayerController.TargetChanged += OnPlayerControllerTargetChange;
 		for (int i = 0; i < yeetPreviewStep; i++)
 		{
 			yeetPreviewerPath.Curve.AddPoint(Transform.Origin + Vector3.Up * i);
@@ -61,20 +63,34 @@ public partial class Grabber : RayCast3D
 			}
 		}
 	}
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		yeetDirection.Z = Mathf.Clamp(yeetDirection.Z, -10, -2);
 		yeetDirection.Y = Mathf.Clamp(yeetDirection.Y, 2, 10);
 	}
-	public override void _PhysicsProcess(double delta)
+
+	public void ReadyToFire()
 	{
 		GlobalTransform = Target.GlobalTransform;
-		Visible = Armed;
+		Visible = true;
+		Armed = true;
 		CheckForCollision();
-		YeetPreview(delta);
+		YeetPreview(GetPhysicsProcessDeltaTime());
 		if (IsInstanceValid(currentHoldedObject))
 		{
 			currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
+			currentHoldedObject.Visible = true;
+		}
+
+	}
+
+	public void Release()
+	{
+		Armed = false;
+		Visible = false;
+		if (IsInstanceValid(currentHoldedObject))
+		{
+			currentHoldedObject.Visible = false;
 		}
 	}
 
@@ -84,6 +100,7 @@ public partial class Grabber : RayCast3D
 		{
 			currentHoldedObject.GlobalTransform = grabbedObjectPoint.GlobalTransform;
 			{
+				CloneManager.AddClone();
 				ThrowCurrentHoldedObject();
 			}
 		}
@@ -154,5 +171,8 @@ public partial class Grabber : RayCast3D
 		currentHoldedObject.Setup(entity);
 		GetTree().CurrentScene.AddChild(currentHoldedObject);
 	}
-
+	private void OnPlayerControllerTargetChange(Node3D newTarget)
+	{
+		Target = (CharacterBody3D)newTarget;
+	}
 }
