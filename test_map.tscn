@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://cblbnf8xw2msf" path="res://Scripts/Components/Camera.cs" id="3_ssfg1"]
 [ext_resource type="Script" uid="uid://bucvs87goucpe" path="res://Scripts/Entities/RayCastCamera3d.cs" id="4_qgarv"]
 [ext_resource type="PackedScene" uid="uid://d0yhypts74cdu" path="res://Nodes/Components/player_controller.tscn" id="5_qgarv"]
-[ext_resource type="PackedScene" uid="uid://bryfu7qj3p31p" path="res://Nodes/Components/grabber.tscn" id="6_r0pc2"]
+[ext_resource type="PackedScene" uid="uid://bryfu7qj3p31p" path="res://Nodes/Components/CloneYeeter.tscn" id="6_r0pc2"]
 [ext_resource type="Script" uid="uid://ddpgjn18bjan0" path="res://Scripts/Components/CloneManager.cs" id="7_ssfg1"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_r0pc2"]
@@ -89,13 +89,13 @@ v_offset = 10.0
 fov = 70.0
 script = ExtResource("4_qgarv")
 
-[node name="PlayerController" parent="." node_paths=PackedStringArray("ControlledEntity", "Grabber") instance=ExtResource("5_qgarv")]
+[node name="PlayerController" parent="." node_paths=PackedStringArray("ControlledEntity", "CloneYeeter") instance=ExtResource("5_qgarv")]
 _rotationSpeed = 7.0
 ControlledEntity = NodePath("../GreenGuy")
-Grabber = NodePath("../Grabber")
+CloneYeeter = NodePath("../CloneYeeter")
 MaxClones = 3
 
-[node name="Grabber" parent="." node_paths=PackedStringArray("Target") instance=ExtResource("6_r0pc2")]
+[node name="CloneYeeter" parent="." node_paths=PackedStringArray("Target") instance=ExtResource("6_r0pc2")]
 Target = NodePath("../GreenGuy")
 
 [node name="CloneManager" type="Node" parent="."]

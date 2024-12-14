@@ -15,7 +15,7 @@ public partial class PlayerController : Node
 	[Export]
 	public Node3D ControlledEntity { get; private set; }
 	[Export]
-	public Grabber Grabber { get; private set; }
+	public CloneYeeter CloneYeeter { get; private set; }
 	[Export]
 	public int MaxClones { get; private set; } = 2;
 
@@ -102,15 +102,15 @@ public partial class PlayerController : Node
 		var greenguyz = GetClones();
 		if (Input.IsActionPressed("mouse_right"))
 		{
-			Grabber.ReadyToFire();
+			CloneYeeter.ReadyToFire();
 			if (Input.IsActionJustPressed("mouse_left"))
 			{
-				if (greenguyz.Count > 0 && greenguyz.Count < MaxClones) Grabber.YEET();
+				if (greenguyz.Count > 0 && greenguyz.Count < MaxClones) CloneYeeter.YEET();
 			}
 		}
 		if (Input.IsActionJustReleased("mouse_right"))
 		{
-			Grabber.Release();
+			CloneYeeter.Release();
 		}
 	}
 

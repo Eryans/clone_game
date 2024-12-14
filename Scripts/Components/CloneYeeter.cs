@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Grabber : RayCast3D
+public partial class CloneYeeter : Node3D
 {
 	[ExportGroup("Yeet")]
 	[Export]

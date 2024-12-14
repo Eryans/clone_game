@@ -1,16 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://bryfu7qj3p31p"]
 
-[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Scripts/Components/Grabber.cs" id="1_vg3gg"]
+[ext_resource type="Script" uid="uid://04enrdqvox1g" path="res://Scripts/Components/CloneYeeter.cs" id="1_vg3gg"]
 [ext_resource type="Material" uid="uid://b7ndkwhnqkvo1" path="res://Assets/Materials/preview_mat.tres" id="2_2wle8"]
 [ext_resource type="AudioStream" uid="uid://dpqspud2tg4v4" path="res://Assets/Sounds/woosh.mp3" id="3_2wle8"]
 
 [sub_resource type="Curve3D" id="Curve3D_d47nd"]
 
-[node name="Grabber" type="RayCast3D" node_paths=PackedStringArray("YeetSound")]
+[node name="CloneYeeter" type="Node3D" node_paths=PackedStringArray("YeetSound")]
 transform = Transform3D(1.18723, 0, 0, 0, 1.18723, 0, 0, 0, 1.18723, 0, 0, 0)
-target_position = Vector3(0, 0, -3)
-debug_shape_custom_color = Color(1, 0, 0, 1)
-debug_shape_thickness = 3
 script = ExtResource("1_vg3gg")
 YeetSound = NodePath("YeetSoundPlayer")
 yeetDirection = Vector3(0, 7, -5)
