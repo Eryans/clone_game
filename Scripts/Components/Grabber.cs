@@ -74,7 +74,7 @@ public partial class Grabber : RayCast3D
 		GlobalTransform = Target.GlobalTransform;
 		Visible = true;
 		Armed = true;
-		CheckForCollision();
+		// CheckForCollision();
 		YeetPreview(GetPhysicsProcessDeltaTime());
 		if (IsInstanceValid(currentHoldedObject))
 		{
@@ -90,12 +90,13 @@ public partial class Grabber : RayCast3D
 		Visible = false;
 		if (IsInstanceValid(currentHoldedObject))
 		{
-			currentHoldedObject.Visible = false;
+			currentHoldedObject.QueueFree();
 		}
 	}
 
 	public void YEET()
 	{
+		MakeClone();
 		if (IsInstanceValid(currentHoldedObject))
 		{
 			currentHoldedObject.GlobalTransform = grabbedObjectPoint.GlobalTransform;
@@ -132,6 +133,7 @@ public partial class Grabber : RayCast3D
 		}
 
 	}
+
 	private void ThrowCurrentHoldedObject()
 	{
 		if (IsInstanceValid(currentHoldedObject))
@@ -146,7 +148,6 @@ public partial class Grabber : RayCast3D
 	{
 		Vector3 startPosition = grabbedObjectPoint.Transform.Origin;
 		Vector3 gravity = Target.GetGravity();
-
 		float accumulatedTime = 0.0f;
 
 		for (int i = 0; i < yeetPreviewStep; i++)

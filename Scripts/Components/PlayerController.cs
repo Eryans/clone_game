@@ -13,9 +13,13 @@ public partial class PlayerController : Node
 	[Export]
 	private float _rotationSpeed = 3f;
 	[Export]
-	public CharacterBody3D ControlledEntity { get; private set; }
+	public Node3D ControlledEntity { get; private set; }
 	[Export]
 	public Grabber Grabber { get; private set; }
+	[Export]
+	public int MaxClones { get; private set; } = 2;
+
+	private Node3D _lastControlledEntity;
 
 	public static event Action<bool> RightClick;
 	public static event Action LeftClick;
@@ -26,46 +30,58 @@ public partial class PlayerController : Node
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector3 velocity = ControlledEntity.Velocity;
-		if (!ControlledEntity.IsOnFloor())
+		if (ControlledEntity is CharacterBody3D controlledEntity)
 		{
-			velocity += ControlledEntity.GetGravity() * (float)delta;
-		}
 
-		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		Vector3 direction = new Vector3(inputDir.X, 0, inputDir.Y).Normalized();
-		if (direction != Vector3.Zero)
-		{
-			velocity.X = direction.X * Speed;
-			velocity.Z = direction.Z * Speed;
-			if (IsInstanceValid(WalkSoundStreamPlayer) && !WalkSoundStreamPlayer.Playing) WalkSoundStreamPlayer.Play();
-		}
-		else
-		{
-			if (IsInstanceValid(WalkSoundStreamPlayer)) WalkSoundStreamPlayer.Stop();
-			velocity.X = Mathf.MoveToward(ControlledEntity.Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(ControlledEntity.Velocity.Z, 0, Speed);
-		}
+			Vector3 velocity = controlledEntity.Velocity;
+			if (!controlledEntity.IsOnFloor())
+			{
+				velocity += controlledEntity.GetGravity() * (float)delta;
+			}
 
-		ControlledEntity.Velocity = velocity;
-		ControlledEntity.MoveAndSlide();
+			Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+			Vector3 direction = new Vector3(inputDir.X, 0, inputDir.Y).Normalized();
+			if (direction != Vector3.Zero)
+			{
+				velocity.X = direction.X * Speed;
+				velocity.Z = direction.Z * Speed;
+				if (IsInstanceValid(WalkSoundStreamPlayer) && !WalkSoundStreamPlayer.Playing) WalkSoundStreamPlayer.Play();
+			}
+			else
+			{
+				if (IsInstanceValid(WalkSoundStreamPlayer)) WalkSoundStreamPlayer.Stop();
+				velocity.X = Mathf.MoveToward(controlledEntity.Velocity.X, 0, Speed);
+				velocity.Z = Mathf.MoveToward(controlledEntity.Velocity.Z, 0, Speed);
+			}
 
-		HandleMouseInputs();
-		if (Input.IsActionJustPressed("ui_accept"))
-		{
-			ChangeControlledEntity();
+			controlledEntity.Velocity = velocity;
+			controlledEntity.MoveAndSlide();
+
+			HandleMouseInputs();
+			if (Input.IsActionJustPressed("ui_accept"))
+			{
+				ChangeControlledEntity();
+			}
+			if (Input.IsActionJustPressed("kill"))
+			{
+				KillControlledEntity();
+			}
 		}
 	}
-
+	private Godot.Collections.Array<Node> GetClones()
+	{
+		return GetTree().GetNodesInGroup("greenguyz");
+	}
 	private void ChangeControlledEntity()
 	{
-		var greenguyz = GetTree().GetNodesInGroup("greenguyz");
+		var greenguyz = GetClones();
 		if (greenguyz.Count > 1)
 		{
 			for (int i = 0; i < greenguyz.Count; i++)
 			{
 				if (greenguyz[i].GetInstanceId() == ControlledEntity.GetInstanceId())
 				{
+					_lastControlledEntity = (CharacterBody3D)greenguyz[i];
 					ControlledEntity = (CharacterBody3D)greenguyz[i + 1 >= greenguyz.Count ? 0 : i + 1];
 					TargetChanged?.Invoke(ControlledEntity);
 					break;
@@ -74,27 +90,29 @@ public partial class PlayerController : Node
 		}
 	}
 
+	private void KillControlledEntity()
+	{
+		if (GetClones().Count > 1)
+		{
+			ChangeControlledEntity();
+			_lastControlledEntity.QueueFree();
+		}
+	}
+
 	private void HandleMouseInputs()
 	{
+		var greenguyz = GetClones();
 		if (Input.IsActionPressed("mouse_right"))
 		{
-			if (CloneManager.AvailableClone > 0)
+			Grabber.ReadyToFire();
+			if (Input.IsActionJustPressed("mouse_left"))
 			{
-				Grabber.MakeClone();
-				Grabber.ReadyToFire();
-			}
-			else
-			{
-				Grabber.Release();
+				if (greenguyz.Count > 0 && greenguyz.Count < MaxClones) Grabber.YEET();
 			}
 		}
 		if (Input.IsActionJustReleased("mouse_right"))
 		{
 			Grabber.Release();
-		}
-		if (Input.IsActionJustPressed("mouse_left"))
-		{
-			if (CloneManager.AvailableClone > 0) Grabber.YEET();
 		}
 	}
 

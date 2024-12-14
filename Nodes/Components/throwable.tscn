@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://rng5vurt5iln" path="res://Assets/Sounds/walabala.mp3" id="2_nxnja"]
 [ext_resource type="AudioStream" uid="uid://dvseed7ebmdrn" path="res://Assets/Sounds/bom.mp3" id="3_1qnuf"]
 
-[node name="Throwable" type="RigidBody3D"]
+[node name="Throwable" type="RigidBody3D" groups=["greenguyz"]]
 collision_layer = 6
 collision_mask = 6
 script = ExtResource("1_cgnoy")

@@ -93,6 +93,7 @@ script = ExtResource("4_qgarv")
 _rotationSpeed = 7.0
 ControlledEntity = NodePath("../GreenGuy")
 Grabber = NodePath("../Grabber")
+MaxClones = 3
 
 [node name="Grabber" parent="." node_paths=PackedStringArray("Target") instance=ExtResource("6_r0pc2")]
 Target = NodePath("../GreenGuy")
