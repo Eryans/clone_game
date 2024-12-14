@@ -12,7 +12,7 @@ public partial class CloneYeeter : Node3D
 	[Export]
 	private float yeetDirectionChangeAmount = .25f;
 	[Export]
-	private CharacterBody3D Target;
+	private Node3D Target;
 	private Marker3D grabbedObjectPoint;
 	private PackedScene greenGuyToThrow;
 	private Path3D yeetPreviewerPath;
@@ -104,7 +104,8 @@ public partial class CloneYeeter : Node3D
 	private void YeetPreview(double delta)
 	{
 		Vector3 startPosition = grabbedObjectPoint.Transform.Origin;
-		Vector3 gravity = Target.GetGravity();
+		float gravityForce = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+		Vector3 gravity = Vector3.Down * gravityForce;
 		float accumulatedTime = 0.0f;
 
 		for (int i = 0; i < yeetPreviewStep; i++)
@@ -121,6 +122,6 @@ public partial class CloneYeeter : Node3D
 
 	private void OnPlayerControllerTargetChange(Node3D newTarget)
 	{
-		Target = (CharacterBody3D)newTarget;
+		Target = newTarget;
 	}
 }

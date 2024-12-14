@@ -25,6 +25,7 @@ public partial class PlayerController : Node
 	public override void _Ready()
 	{
 		RayCastCamera3d.MouseMoved += OnWorld3DMousePositionMovement;
+		GreenGuyThrowable.ThrownGreenGuyWakesUp += OnGreenGuyThrowableWakesup;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -79,8 +80,8 @@ public partial class PlayerController : Node
 			{
 				if (greenguyz[i].GetInstanceId() == ControlledEntity.GetInstanceId())
 				{
-					_lastControlledEntity = (CharacterBody3D)greenguyz[i];
-					ControlledEntity = (CharacterBody3D)greenguyz[i + 1 >= greenguyz.Count ? 0 : i + 1];
+					_lastControlledEntity = (Node3D)greenguyz[i];
+					ControlledEntity = (Node3D)greenguyz[i + 1 >= greenguyz.Count ? 0 : i + 1];
 					TargetChanged?.Invoke(ControlledEntity);
 					break;
 				}
@@ -96,7 +97,14 @@ public partial class PlayerController : Node
 			_lastControlledEntity.QueueFree();
 		}
 	}
-
+	private void OnGreenGuyThrowableWakesup(GreenGuy greenGuy)
+	{
+		if (ControlledEntity is GreenGuyThrowable)
+		{
+			ControlledEntity = greenGuy;
+			TargetChanged?.Invoke(ControlledEntity);
+		}
+	}
 	private void HandleMouseInputs()
 	{
 		var greenguyz = GetClones();
@@ -116,6 +124,7 @@ public partial class PlayerController : Node
 
 	private void OnWorld3DMousePositionMovement(Vector3 mousePos)
 	{
-		ControlledEntity.Rotation = ControlledEntity.Rotation with { Y = Mathf.LerpAngle(ControlledEntity.Rotation.Y, Utils.LookAtTarget(ControlledEntity.GlobalPosition, mousePos), (float)GetPhysicsProcessDeltaTime() * _rotationSpeed) };
+		if (ControlledEntity is GreenGuy)
+			ControlledEntity.Rotation = ControlledEntity.Rotation with { Y = Mathf.LerpAngle(ControlledEntity.Rotation.Y, Utils.LookAtTarget(ControlledEntity.GlobalPosition, mousePos), (float)GetPhysicsProcessDeltaTime() * _rotationSpeed) };
 	}
 }
