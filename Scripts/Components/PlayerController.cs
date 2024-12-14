@@ -57,14 +57,14 @@ public partial class PlayerController : Node
 			controlledEntity.MoveAndSlide();
 
 			HandleMouseInputs();
-			if (Input.IsActionJustPressed("ui_accept"))
-			{
-				ChangeControlledEntity();
-			}
 			if (Input.IsActionJustPressed("kill"))
 			{
 				KillControlledEntity();
 			}
+		}
+		if (Input.IsActionJustPressed("ui_accept"))
+		{
+			ChangeControlledEntity();
 		}
 	}
 	private Godot.Collections.Array<Node> GetClones()
