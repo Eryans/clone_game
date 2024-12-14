@@ -14,19 +14,18 @@ public partial class Grabber : RayCast3D
 	[Export]
 	private CharacterBody3D Target;
 	private Marker3D grabbedObjectPoint;
-	private Throwable currentHoldedObject;
-	private PackedScene _greenGuy;
-	private PackedScene _throwableScene;
+	private PackedScene greenGuyToThrow;
 	private Path3D yeetPreviewerPath;
+	private bool canThrow = true;
 	public bool Armed;
 	public override void _Ready()
 	{
 		Visible = false;
 		grabbedObjectPoint = GetNode<Marker3D>("Marker3D");
-		_throwableScene = GD.Load<PackedScene>("res://Nodes/Components/throwable.tscn");
-		_greenGuy = GD.Load<PackedScene>("res://Nodes/Entities/green_guy.tscn");
+		greenGuyToThrow = GD.Load<PackedScene>("res://Nodes/Components/GreenGuyThrowable.tscn");
 		yeetPreviewerPath = GetNode<Path3D>("Path3D");
 		PlayerController.TargetChanged += OnPlayerControllerTargetChange;
+		GreenGuyThrowable.ThrownGreenGuyWakesUp += CanThrowAgain;
 		for (int i = 0; i < yeetPreviewStep; i++)
 		{
 			yeetPreviewerPath.Curve.AddPoint(Transform.Origin + Vector3.Up * i);
@@ -76,71 +75,29 @@ public partial class Grabber : RayCast3D
 		Armed = true;
 		// CheckForCollision();
 		YeetPreview(GetPhysicsProcessDeltaTime());
-		if (IsInstanceValid(currentHoldedObject))
-		{
-			currentHoldedObject.GlobalPosition = grabbedObjectPoint.GlobalPosition;
-			currentHoldedObject.Visible = true;
-		}
-
 	}
 
 	public void Release()
 	{
 		Armed = false;
 		Visible = false;
-		if (IsInstanceValid(currentHoldedObject))
-		{
-			currentHoldedObject.QueueFree();
-		}
+	}
+
+	private void CanThrowAgain(GreenGuy _greenGuy)
+	{
+		canThrow = true;
 	}
 
 	public void YEET()
 	{
-		MakeClone();
-		if (IsInstanceValid(currentHoldedObject))
+		if (canThrow)
 		{
-			currentHoldedObject.GlobalTransform = grabbedObjectPoint.GlobalTransform;
-			{
-				CloneManager.AddClone();
-				ThrowCurrentHoldedObject();
-			}
-		}
-	}
-
-	private void CheckForCollision()
-	{
-		if (IsColliding())
-		{
-			var collision = GetCollider();
-			if (collision is CharacterBody3D cb && cb.IsInGroup("grabbable"))
-			{
-				if (Input.IsActionJustPressed("action") && !IsInstanceValid(currentHoldedObject))
-				{
-					SetCurrentHoldedObject((Node3D)cb.Duplicate(7));
-					cb.QueueFree();
-				}
-			}
-
-		}
-	}
-
-	public void MakeClone()
-	{
-		if (!IsInstanceValid(currentHoldedObject))
-		{
-			Node clone = _greenGuy.Instantiate();
-			SetCurrentHoldedObject((Node3D)clone);
-		}
-
-	}
-
-	private void ThrowCurrentHoldedObject()
-	{
-		if (IsInstanceValid(currentHoldedObject))
-		{
+			canThrow = false;
+			GreenGuyThrowable toThrow = (GreenGuyThrowable)greenGuyToThrow.Instantiate();
+			GetTree().CurrentScene.AddChild(toThrow);
+			toThrow.GlobalTransform = grabbedObjectPoint.GlobalTransform;
 			if (IsInstanceValid(YeetSound)) YeetSound.Play();
-			currentHoldedObject.Yeet(Target.Transform.Basis * yeetDirection);
-			currentHoldedObject = null;
+			toThrow.Yeet(Target.Transform.Basis * yeetDirection);
 		}
 	}
 
@@ -162,16 +119,6 @@ public partial class Grabber : RayCast3D
 		}
 	}
 
-	private void SetCurrentHoldedObject(Node3D entity)
-	{
-		currentHoldedObject = (Throwable)_throwableScene.Instantiate();
-		currentHoldedObject.SetCollisionMaskValue(1, false);
-		currentHoldedObject.SetCollisionMaskValue(2, true);
-		currentHoldedObject.SetCollisionLayerValue(1, false);
-		currentHoldedObject.SetCollisionLayerValue(2, true);
-		currentHoldedObject.Setup(entity);
-		GetTree().CurrentScene.AddChild(currentHoldedObject);
-	}
 	private void OnPlayerControllerTargetChange(Node3D newTarget)
 	{
 		Target = (CharacterBody3D)newTarget;

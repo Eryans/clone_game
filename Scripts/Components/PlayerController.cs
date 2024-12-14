@@ -21,8 +21,6 @@ public partial class PlayerController : Node
 
 	private Node3D _lastControlledEntity;
 
-	public static event Action<bool> RightClick;
-	public static event Action LeftClick;
 	public static event Action<Node3D> TargetChanged;
 	public override void _Ready()
 	{

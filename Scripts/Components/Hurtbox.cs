@@ -14,7 +14,7 @@ public partial class Hurtbox : Area3D
 
     public void OnBodyEntered(Node3D body)
     {
-        if (body is Throwable)
+        if (body is GreenGuyThrowable)
         {
             _health.TakeDamage(5);
         }

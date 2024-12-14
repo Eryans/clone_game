@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://vioj0sqqwc0n"]
+
+[ext_resource type="Script" uid="uid://c3p0vot0tvm02" path="res://Scripts/Components/GreenGuyThrowable.cs" id="1_fy8o7"]
+[ext_resource type="AudioStream" uid="uid://rng5vurt5iln" path="res://Assets/Sounds/walabala.mp3" id="2_787av"]
+[ext_resource type="AudioStream" uid="uid://dvseed7ebmdrn" path="res://Assets/Sounds/bom.mp3" id="3_7nftu"]
+[ext_resource type="PackedScene" uid="uid://dwrlrcfok1bdq" path="res://Assets/Models/tinygreenguy.glb" id="4_607en"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fo554"]
+radius = 0.241528
+
+[node name="GreenGuyThrowable" type="RigidBody3D" groups=["greenguyz"]]
+collision_layer = 6
+collision_mask = 6
+script = ExtResource("1_fy8o7")
+
+[node name="YeetedSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_787av")
+volume_db = -20.0
+pitch_scale = 1.6
+bus = &"SFX"
+
+[node name="BompSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_7nftu")
+pitch_scale = 1.11
+bus = &"SFX"
+
+[node name="tinygreenguy" parent="." instance=ExtResource("4_607en")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.909974, 0)
+shape = SubResource("CapsuleShape3D_fo554")
+
+[editable path="tinygreenguy"]
