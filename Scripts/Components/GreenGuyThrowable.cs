@@ -8,12 +8,13 @@ public partial class GreenGuyThrowable : RigidBody3D
 	private Timer _wakeUpTimer = new();
 	private AudioStreamPlayer _yeetedSoundPlayer;
 	private AudioStreamPlayer _bompSoundPlayer;
-
+	private AnimationPlayer animationPlayer;
 	public static event Action<GreenGuy> ThrownGreenGuyWakesUp;
 	public override void _Ready()
 	{
 		AddChild(_wakeUpTimer);
 		_wakeUpTimer.Timeout += OnWakeUpTimerTimeout;
+		animationPlayer = GetNode<AnimationPlayer>("tinygreenguy/AnimationPlayer");
 		_yeetedSoundPlayer = GetNode<AudioStreamPlayer>("YeetedSoundPlayer");
 		_bompSoundPlayer = GetNode<AudioStreamPlayer>("BompSoundPlayer");
 		ContactMonitor = true;
@@ -22,6 +23,7 @@ public partial class GreenGuyThrowable : RigidBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		animationPlayer.Play("flying");
 		if (_isHolded)
 		{
 			LinearVelocity = Vector3.Zero;

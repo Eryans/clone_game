@@ -97,6 +97,10 @@ kill={
 ]
 }
 
+[physics]
+
+common/physics_ticks_per_second=90
+
 [rendering]
 
 anti_aliasing/quality/msaa_3d=1
